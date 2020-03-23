@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynomial.WebApi", "Polynomial.WebApi\Polynomial.WebApi.csproj", "{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynomial.UnitTests", "..\Polynomial.UnitTests\Polynomial.UnitTests.csproj", "{C6473879-E11A-4CA4-B6AF-88FDEF446B74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6473879-E11A-4CA4-B6AF-88FDEF446B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6473879-E11A-4CA4-B6AF-88FDEF446B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6473879-E11A-4CA4-B6AF-88FDEF446B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6473879-E11A-4CA4-B6AF-88FDEF446B74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
