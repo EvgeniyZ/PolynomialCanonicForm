@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynomial.WebApi", "Polynomial.WebApi\Polynomial.WebApi.csproj", "{3FB063BD-411E-46A2-A17C-2CA0BBF5ACD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynomial.UnitTests", "..\Polynomial.UnitTests\Polynomial.UnitTests.csproj", "{C6473879-E11A-4CA4-B6AF-88FDEF446B74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polynomial.UnitTests", "Polynomial.UnitTests\Polynomial.UnitTests.csproj", "{C6473879-E11A-4CA4-B6AF-88FDEF446B74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
