@@ -1,12 +1,12 @@
 grammar Polynomial;
 
-polynomial      : (SIGN? monomial)(SIGN monomial)*     #addSum
+polynomial      : (SIGN? monomial)(SIGN monomial)*     #addSub
                 | '(' polynomial ')'                   #parens
                 ;
 
 monomial        : DOUBLE? INT? VAR (POW INT)?          #realMonomial
-                | DOUBLE #double
-                | INT #integer
+                | DOUBLE                               #double
+                | INT                                  #integer
                 ;
 
 INT                     : [0-9]+;

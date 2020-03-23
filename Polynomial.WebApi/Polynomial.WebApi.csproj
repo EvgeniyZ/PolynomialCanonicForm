@@ -5,8 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Antlr4" Version="4.6.6" />
-      <PackageReference Include="Antlr4.CodeGenerator" Version="4.6.6" />
+      <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
     </ItemGroup>
 
 
