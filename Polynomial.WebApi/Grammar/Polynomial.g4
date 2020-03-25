@@ -1,10 +1,8 @@
 grammar Polynomial;
 
-polynomial      : (SIGN? monomial)(SIGN monomial)*     #addSub
+polynomial      : polynomial op=('+'|'-') polynomial   #addSub
                 | '(' polynomial ')'                   #parens
-                ;
-
-monomial        : DOUBLE? INT? VAR ('^' INT)?          #realMonomial
+                | DOUBLE? INT? VAR ('^' INT)?          #monomial
                 | DOUBLE                               #double
                 | INT                                  #integer
                 ;
@@ -12,5 +10,6 @@ monomial        : DOUBLE? INT? VAR ('^' INT)?          #realMonomial
 INT                     : [0-9]+;
 DOUBLE                  : ('0'..'9')+ '.'+ ('0'..'9')*;
 VAR                     : [a-z]+;
-SIGN                    : '+' | '-';
+ADD                     : '+';
+SUB                     : '-';
 WHITESPACE              : (' '|'\t')+ -> skip;

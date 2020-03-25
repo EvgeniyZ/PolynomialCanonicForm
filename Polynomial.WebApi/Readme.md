@@ -4,6 +4,6 @@ you must have:
 * Installed latest Java JDK
 * Add Java bin to Path
 * Download ANTLR tool and Java Target binaries, copy this .jar to \Grammar folder
-* Execute java -jar antlr-***.jar -visitor -Dlanguage=CSharp Polynomial.g4
+* Execute ```java -jar antlr-***.jar -Dlanguage=CSharp -visitor Polynomial.g4 -o ..\Traversing\ ```
 <br>
 Where *** -> your antlr tool java binary version. 

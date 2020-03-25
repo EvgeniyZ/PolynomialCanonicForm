@@ -1,6 +1,5 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using Polynomial.WebApi.Traversing;
 
 namespace Polynomial.WebApi.Services
 {

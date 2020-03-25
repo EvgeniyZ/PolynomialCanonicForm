@@ -24,71 +24,68 @@ using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
 using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
-namespace Polynomial.WebApi.Traversing
-{
+/// <summary>
+/// This class provides an empty implementation of <see cref="IPolynomialVisitor{Result}"/>,
+/// which can be extended to create a visitor which only needs to handle a subset
+/// of the available methods.
+/// </summary>
+/// <typeparam name="Result">The return type of the visit operation.</typeparam>
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
+[System.CLSCompliant(false)]
+public partial class PolynomialBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IPolynomialVisitor<Result> {
 	/// <summary>
-	/// This class provides an empty implementation of <see cref="IPolynomialVisitor{Result}"/>,
-	/// which can be extended to create a visitor which only needs to handle a subset
-	/// of the available methods.
+	/// Visit a parse tree produced by the <c>parens</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
 	/// </summary>
-	/// <typeparam name="Result">The return type of the visit operation.</typeparam>
-	[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
-	[System.CLSCompliant(false)]
-	public partial class PolynomialBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IPolynomialVisitor<Result> {
-		/// <summary>
-		/// Visit a parse tree produced by the <c>addSub</c>
-		/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-		/// <para>
-		/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-		/// on <paramref name="context"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		public virtual Result VisitAddSub([NotNull] PolynomialParser.AddSubContext context) { return VisitChildren(context); }
-		/// <summary>
-		/// Visit a parse tree produced by the <c>parens</c>
-		/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-		/// <para>
-		/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-		/// on <paramref name="context"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		public virtual Result VisitParens([NotNull] PolynomialParser.ParensContext context) { return VisitChildren(context); }
-		/// <summary>
-		/// Visit a parse tree produced by the <c>realMonomial</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// <para>
-		/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-		/// on <paramref name="context"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		public virtual Result VisitRealMonomial([NotNull] PolynomialParser.RealMonomialContext context) { return VisitChildren(context); }
-		/// <summary>
-		/// Visit a parse tree produced by the <c>double</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// <para>
-		/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-		/// on <paramref name="context"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		public virtual Result VisitDouble([NotNull] PolynomialParser.DoubleContext context) { return VisitChildren(context); }
-		/// <summary>
-		/// Visit a parse tree produced by the <c>integer</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// <para>
-		/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
-		/// on <paramref name="context"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		public virtual Result VisitInteger([NotNull] PolynomialParser.IntegerContext context) { return VisitChildren(context); }
-	}
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitParens([NotNull] PolynomialParser.ParensContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>monomial</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitMonomial([NotNull] PolynomialParser.MonomialContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>double</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitDouble([NotNull] PolynomialParser.DoubleContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>addSub</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitAddSub([NotNull] PolynomialParser.AddSubContext context) { return VisitChildren(context); }
+	/// <summary>
+	/// Visit a parse tree produced by the <c>integer</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitInteger([NotNull] PolynomialParser.IntegerContext context) { return VisitChildren(context); }
 }

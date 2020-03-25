@@ -23,50 +23,47 @@ using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using IToken = Antlr4.Runtime.IToken;
 
-namespace Polynomial.WebApi.Traversing
-{
+/// <summary>
+/// This interface defines a complete generic visitor for a parse tree produced
+/// by <see cref="PolynomialParser"/>.
+/// </summary>
+/// <typeparam name="Result">The return type of the visit operation.</typeparam>
+[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
+[System.CLSCompliant(false)]
+public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// This interface defines a complete generic visitor for a parse tree produced
-	/// by <see cref="PolynomialParser"/>.
+	/// Visit a parse tree produced by the <c>parens</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>
-	/// <typeparam name="Result">The return type of the visit operation.</typeparam>
-	[System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.8")]
-	[System.CLSCompliant(false)]
-	public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
-		/// <summary>
-		/// Visit a parse tree produced by the <c>addSub</c>
-		/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		Result VisitAddSub([NotNull] PolynomialParser.AddSubContext context);
-		/// <summary>
-		/// Visit a parse tree produced by the <c>parens</c>
-		/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		Result VisitParens([NotNull] PolynomialParser.ParensContext context);
-		/// <summary>
-		/// Visit a parse tree produced by the <c>realMonomial</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		Result VisitRealMonomial([NotNull] PolynomialParser.RealMonomialContext context);
-		/// <summary>
-		/// Visit a parse tree produced by the <c>double</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		Result VisitDouble([NotNull] PolynomialParser.DoubleContext context);
-		/// <summary>
-		/// Visit a parse tree produced by the <c>integer</c>
-		/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
-		/// </summary>
-		/// <param name="context">The parse tree.</param>
-		/// <return>The visitor result.</return>
-		Result VisitInteger([NotNull] PolynomialParser.IntegerContext context);
-	}
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParens([NotNull] PolynomialParser.ParensContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>monomial</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMonomial([NotNull] PolynomialParser.MonomialContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>double</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDouble([NotNull] PolynomialParser.DoubleContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>addSub</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitAddSub([NotNull] PolynomialParser.AddSubContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>integer</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitInteger([NotNull] PolynomialParser.IntegerContext context);
 }
