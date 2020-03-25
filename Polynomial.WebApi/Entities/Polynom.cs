@@ -1,52 +1,27 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Polynomial.WebApi.Entities
 {
     public class Polynom
     {
-        public double Coefficient { get; set; }
-        public int Power { get; set; }
-        public string Variable { get; set; }
-
-        public override int GetHashCode()
+        public Polynom()
         {
-            int hashCode = 0;
-            foreach (char character in Variable)
-            {
-                hashCode += character.GetHashCode();
-            }
-
-            return hashCode ^ Power;
+            Monoms = new List<Monom>();
         }
+
+        public ICollection<Monom> Monoms { get; set; }
 
         public override string ToString()
         {
-            if (Math.Abs(Coefficient) < Double.Epsilon)
+            var canonical = new StringBuilder();
+            foreach (var monom in Monoms)
             {
-                if (Power > 0)
-                {
-                    if (string.IsNullOrEmpty(Variable))
-                    {
-                        throw new Exception($"Power {Power} specified but no Variable set");
-                    }
-
-                    return $"{Variable}^{Power}";
-                }
-
-                return $"{Variable}";
+                canonical.Append(monom);
             }
 
-            if (Power > 0)
-            {
-                if (string.IsNullOrEmpty(Variable))
-                {
-                    throw new Exception($"Power {Power} specified but no Variable set");
-                }
-
-                return $"{Coefficient}{Variable}^{Power}";
-            }
-
-            return $"{Coefficient}{Variable}";
+            return canonical.ToString();
         }
     }
 }

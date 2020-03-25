@@ -6,8 +6,8 @@ namespace Polynomial.UnitTests
     public class CanonicalFormerTests
     {
         [Theory]
-        [InlineData("3+1-2", "2")]
-        [InlineData("x+3+1-2", "x+2")]
+        [InlineData("3+1+2", "6")]
+        [InlineData("x+3+1+2", "x+6")]
         public void ToCanonical_ShouldReturnCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();
