@@ -7,6 +7,7 @@ namespace Polynomial.UnitTests
     {
         [Theory]
         [InlineData("3+1-2", "2")]
+        [InlineData("x+3+1-2", "x+2")]
         public void ToCanonical_ShouldReturnCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();

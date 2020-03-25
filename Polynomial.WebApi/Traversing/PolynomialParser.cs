@@ -35,7 +35,7 @@ namespace Polynomial.WebApi.Traversing
 		protected static DFA[] decisionToDFA;
 		protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 		public const int
-			T__0=1, T__1=2, INT=3, DOUBLE=4, VAR=5, POW=6, SIGN=7, WHITESPACE=8;
+			T__0=1, T__1=2, T__2=3, INT=4, DOUBLE=5, VAR=6, SIGN=7, WHITESPACE=8;
 		public const int
 			RULE_polynomial = 0, RULE_monomial = 1;
 		public static readonly string[] ruleNames = {
@@ -43,10 +43,10 @@ namespace Polynomial.WebApi.Traversing
 		};
 
 		private static readonly string[] _LiteralNames = {
-			null, "'('", "')'", null, null, null, "'^'"
+			null, "'('", "')'", "'^'"
 		};
 		private static readonly string[] _SymbolicNames = {
-			null, null, null, "INT", "DOUBLE", "VAR", "POW", "SIGN", "WHITESPACE"
+			null, null, null, null, "INT", "DOUBLE", "VAR", "SIGN", "WHITESPACE"
 		};
 		public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -105,6 +105,11 @@ namespace Polynomial.WebApi.Traversing
 				IPolynomialListener typedListener = listener as IPolynomialListener;
 				if (typedListener != null) typedListener.ExitParens(this);
 			}
+			public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+				IPolynomialVisitor<TResult> typedVisitor = visitor as IPolynomialVisitor<TResult>;
+				if (typedVisitor != null) return typedVisitor.VisitParens(this);
+				else return visitor.VisitChildren(this);
+			}
 		}
 		public partial class AddSubContext : PolynomialContext {
 			public MonomialContext[] monomial() {
@@ -125,6 +130,11 @@ namespace Polynomial.WebApi.Traversing
 			public override void ExitRule(IParseTreeListener listener) {
 				IPolynomialListener typedListener = listener as IPolynomialListener;
 				if (typedListener != null) typedListener.ExitAddSub(this);
+			}
+			public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+				IPolynomialVisitor<TResult> typedVisitor = visitor as IPolynomialVisitor<TResult>;
+				if (typedVisitor != null) return typedVisitor.VisitAddSub(this);
+				else return visitor.VisitChildren(this);
 			}
 		}
 
@@ -215,7 +225,6 @@ namespace Polynomial.WebApi.Traversing
 			public ITerminalNode INT(int i) {
 				return GetToken(PolynomialParser.INT, i);
 			}
-			public ITerminalNode POW() { return GetToken(PolynomialParser.POW, 0); }
 			public RealMonomialContext(MonomialContext context) { CopyFrom(context); }
 			public override void EnterRule(IParseTreeListener listener) {
 				IPolynomialListener typedListener = listener as IPolynomialListener;
@@ -224,6 +233,11 @@ namespace Polynomial.WebApi.Traversing
 			public override void ExitRule(IParseTreeListener listener) {
 				IPolynomialListener typedListener = listener as IPolynomialListener;
 				if (typedListener != null) typedListener.ExitRealMonomial(this);
+			}
+			public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+				IPolynomialVisitor<TResult> typedVisitor = visitor as IPolynomialVisitor<TResult>;
+				if (typedVisitor != null) return typedVisitor.VisitRealMonomial(this);
+				else return visitor.VisitChildren(this);
 			}
 		}
 		public partial class DoubleContext : MonomialContext {
@@ -237,6 +251,11 @@ namespace Polynomial.WebApi.Traversing
 				IPolynomialListener typedListener = listener as IPolynomialListener;
 				if (typedListener != null) typedListener.ExitDouble(this);
 			}
+			public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+				IPolynomialVisitor<TResult> typedVisitor = visitor as IPolynomialVisitor<TResult>;
+				if (typedVisitor != null) return typedVisitor.VisitDouble(this);
+				else return visitor.VisitChildren(this);
+			}
 		}
 		public partial class IntegerContext : MonomialContext {
 			public ITerminalNode INT() { return GetToken(PolynomialParser.INT, 0); }
@@ -248,6 +267,11 @@ namespace Polynomial.WebApi.Traversing
 			public override void ExitRule(IParseTreeListener listener) {
 				IPolynomialListener typedListener = listener as IPolynomialListener;
 				if (typedListener != null) typedListener.ExitInteger(this);
+			}
+			public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+				IPolynomialVisitor<TResult> typedVisitor = visitor as IPolynomialVisitor<TResult>;
+				if (typedVisitor != null) return typedVisitor.VisitInteger(this);
+				else return visitor.VisitChildren(this);
 			}
 		}
 
@@ -286,9 +310,9 @@ namespace Polynomial.WebApi.Traversing
 						State = 31;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
-						if (_la==POW) {
+						if (_la==T__2) {
 							{
-								State = 29; Match(POW);
+								State = 29; Match(T__2);
 								State = 30; Match(INT);
 							}
 						}
@@ -346,19 +370,19 @@ namespace Polynomial.WebApi.Traversing
 			'\x5', '\x2', '\x2', '\x2', '\x14', '\x15', '\a', '\x4', '\x2', '\x2', 
 			'\x15', '\x17', '\x3', '\x2', '\x2', '\x2', '\x16', '\a', '\x3', '\x2', 
 			'\x2', '\x2', '\x16', '\x12', '\x3', '\x2', '\x2', '\x2', '\x17', '\x3', 
-			'\x3', '\x2', '\x2', '\x2', '\x18', '\x1A', '\a', '\x6', '\x2', '\x2', 
+			'\x3', '\x2', '\x2', '\x2', '\x18', '\x1A', '\a', '\a', '\x2', '\x2', 
 			'\x19', '\x18', '\x3', '\x2', '\x2', '\x2', '\x19', '\x1A', '\x3', '\x2', 
 			'\x2', '\x2', '\x1A', '\x1C', '\x3', '\x2', '\x2', '\x2', '\x1B', '\x1D', 
-			'\a', '\x5', '\x2', '\x2', '\x1C', '\x1B', '\x3', '\x2', '\x2', '\x2', 
+			'\a', '\x6', '\x2', '\x2', '\x1C', '\x1B', '\x3', '\x2', '\x2', '\x2', 
 			'\x1C', '\x1D', '\x3', '\x2', '\x2', '\x2', '\x1D', '\x1E', '\x3', '\x2', 
-			'\x2', '\x2', '\x1E', '!', '\a', '\a', '\x2', '\x2', '\x1F', ' ', '\a', 
-			'\b', '\x2', '\x2', ' ', '\"', '\a', '\x5', '\x2', '\x2', '!', '\x1F', 
+			'\x2', '\x2', '\x1E', '!', '\a', '\b', '\x2', '\x2', '\x1F', ' ', '\a', 
+			'\x5', '\x2', '\x2', ' ', '\"', '\a', '\x6', '\x2', '\x2', '!', '\x1F', 
 			'\x3', '\x2', '\x2', '\x2', '!', '\"', '\x3', '\x2', '\x2', '\x2', '\"', 
-			'&', '\x3', '\x2', '\x2', '\x2', '#', '&', '\a', '\x6', '\x2', '\x2', 
-			'$', '&', '\a', '\x5', '\x2', '\x2', '%', '\x19', '\x3', '\x2', '\x2', 
-			'\x2', '%', '#', '\x3', '\x2', '\x2', '\x2', '%', '$', '\x3', '\x2', '\x2', 
-			'\x2', '&', '\x5', '\x3', '\x2', '\x2', '\x2', '\t', '\a', '\xF', '\x16', 
-			'\x19', '\x1C', '!', '%',
+			'&', '\x3', '\x2', '\x2', '\x2', '#', '&', '\a', '\a', '\x2', '\x2', '$', 
+			'&', '\a', '\x6', '\x2', '\x2', '%', '\x19', '\x3', '\x2', '\x2', '\x2', 
+			'%', '#', '\x3', '\x2', '\x2', '\x2', '%', '$', '\x3', '\x2', '\x2', '\x2', 
+			'&', '\x5', '\x3', '\x2', '\x2', '\x2', '\t', '\a', '\xF', '\x16', '\x19', 
+			'\x1C', '!', '%',
 		};
 
 		public static readonly ATN _ATN =

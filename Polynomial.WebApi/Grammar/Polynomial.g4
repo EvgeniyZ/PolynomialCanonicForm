@@ -4,7 +4,7 @@ polynomial      : (SIGN? monomial)(SIGN monomial)*     #addSub
                 | '(' polynomial ')'                   #parens
                 ;
 
-monomial        : DOUBLE? INT? VAR (POW INT)?          #realMonomial
+monomial        : DOUBLE? INT? VAR ('^' INT)?          #realMonomial
                 | DOUBLE                               #double
                 | INT                                  #integer
                 ;
@@ -12,6 +12,5 @@ monomial        : DOUBLE? INT? VAR (POW INT)?          #realMonomial
 INT                     : [0-9]+;
 DOUBLE                  : ('0'..'9')+ '.'+ ('0'..'9')*;
 VAR                     : [a-z]+;
-POW                     : '^';
 SIGN                    : '+' | '-';
 WHITESPACE              : (' '|'\t')+ -> skip;
