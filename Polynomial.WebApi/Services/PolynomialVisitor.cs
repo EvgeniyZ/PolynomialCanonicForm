@@ -1,33 +1,27 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using Polynomial.WebApi.Entities;
 
 namespace Polynomial.WebApi.Services
 {
-    public class PolynomialVisitor : PolynomialBaseVisitor<string>
+    public class PolynomialVisitor : PolynomialBaseVisitor<Polynom>
     {
-        private readonly Regex DigitRegexp;
-
-        public PolynomialVisitor()
-        {
-            DigitRegexp = new Regex("[0-9]+", RegexOptions.Compiled);
-        }
-
-        public override string VisitParens(PolynomialParser.ParensContext context)
+        public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
             return Visit(context.polynomial());
         }
 
-        public override string VisitDouble(PolynomialParser.DoubleContext context)
+        public override Polynom VisitDouble(PolynomialParser.DoubleContext context)
         {
-            return context.GetText();
+            return new Polynom {Coefficient = double.Parse(context.GetText())};
         }
 
-        public override string VisitInteger(PolynomialParser.IntegerContext context)
+        public override Polynom VisitInteger(PolynomialParser.IntegerContext context)
         {
-            return context.GetText();
+            return new Polynom {Coefficient = int.Parse(context.GetText())};
         }
 
-        public override string VisitMonomial(PolynomialParser.MonomialContext context)
+        public override Polynom VisitMonomial(PolynomialParser.MonomialContext context)
         {
             var realCoefficient = context.DOUBLE().GetText();
             if (string.IsNullOrEmpty(realCoefficient))
@@ -39,10 +33,19 @@ namespace Polynomial.WebApi.Services
                     var power = digits.Skip(1).FirstOrDefault();
                     if (power is null)
                     {
-                        return $"{intCoefficient}{context.VAR().GetText()}";
+                        return new Polynom
+                        {
+                            Coefficient = int.Parse(intCoefficient),
+                            Variable = context.VAR().GetText()
+                        };
                     }
 
-                    return $"{intCoefficient}{context.VAR().GetText()}^{power.GetText()}";
+                    return new Polynom
+                    {
+                        Coefficient = int.Parse(intCoefficient),
+                        Variable = context.VAR().GetText(),
+                        Power = int.Parse(power.GetText())
+                    };
                 }
             }
             else
@@ -51,19 +54,32 @@ namespace Polynomial.WebApi.Services
                 if (digits.Any())
                 {
                     var power = digits.First().GetText();
-                    return $"{realCoefficient}{context.VAR().GetText()}^{power}";
+                    return new Polynom
+                    {
+                        Coefficient = double.Parse(realCoefficient),
+                        Variable = context.VAR().GetText(),
+                        Power = int.Parse(power)
+                    };
                 }
 
-                return $"{realCoefficient}{context.VAR().GetText()}";
+                return new Polynom
+                {
+                    Coefficient = double.Parse(realCoefficient),
+                    Variable = context.VAR().GetText()
+                };
             }
 
-            return context.VAR().GetText();
+            return new Polynom
+            {
+                Variable = context.VAR().GetText()
+            };
         }
 
-        public override string VisitAddSub(PolynomialParser.AddSubContext context)
+        public override Polynom VisitAddSub(PolynomialParser.AddSubContext context)
         {
-            string left = Visit(context.polynomial(0));
-            string right = Visit(context.polynomial(1));
+            Polynom left = Visit(context.polynomial(0));
+            Polynom right = Visit(context.polynomial(1));
+
 
             return left + right;
         }
