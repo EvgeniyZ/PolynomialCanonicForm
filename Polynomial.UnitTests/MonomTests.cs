@@ -67,6 +67,10 @@ namespace Polynomial.UnitTests
             {
                 new Monom {Coefficient = -1, Power = 1, Variable = "x"}, "-x"
             };
+            yield return new object[]
+            {
+                new Monom {Coefficient = 1, Power = 1, Variable = "xy"}, "+xy"
+            };
         }
     }
 }

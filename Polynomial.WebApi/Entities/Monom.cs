@@ -18,13 +18,24 @@ namespace Polynomial.WebApi.Entities
                 return 1;
             }
 
-            return Variable.OrderBy(x => x).ToString().GetHashCode() ^ Power;
+            return string.Concat(Variable.OrderBy(x => x)).GetHashCode() ^ Power;
         }
 
         public string ToHeadlinerString()
         {
             var monomAsString = ToString();
-            if (monomAsString[0] == '+')
+            var startWithPlus = monomAsString[0] == '+';
+            if (monomAsString.Length == 1)
+            {
+                if (startWithPlus)
+                {
+                    return "1";
+                }
+
+                return "-1";
+            }
+
+            if (startWithPlus)
             {
                 return monomAsString.Substring(1);
             }
@@ -81,7 +92,7 @@ namespace Polynomial.WebApi.Entities
         {
             if (coefficient == 1)
             {
-                return string.Empty;
+                return "+";
             }
 
             if (coefficient == -1)
