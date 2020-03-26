@@ -21,6 +21,17 @@ namespace Polynomial.WebApi.Entities
             return Variable.OrderBy(x => x).ToString().GetHashCode() ^ Power;
         }
 
+        public string ToHeadlinerString()
+        {
+            var monomAsString = ToString();
+            if (monomAsString[0] == '+')
+            {
+                return monomAsString.Substring(1);
+            }
+
+            return monomAsString;
+        }
+
         public override string ToString()
         {
             if (Coefficient == 0)
@@ -76,6 +87,11 @@ namespace Polynomial.WebApi.Entities
             if (coefficient == -1)
             {
                 return "-";
+            }
+
+            if (coefficient > 0)
+            {
+                return $"+{coefficient.ToString(CultureInfo.InvariantCulture)}";
             }
 
             return $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
