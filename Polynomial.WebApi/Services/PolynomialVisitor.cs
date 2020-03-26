@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
 
 namespace Polynomial.WebApi.Services
@@ -11,129 +13,111 @@ namespace Polynomial.WebApi.Services
             return Visit(context.polynomial());
         }
 
-        public override Polynom VisitDouble(PolynomialParser.DoubleContext context)
+        public override Polynom VisitNumber(PolynomialParser.NumberContext context)
         {
             return new Polynom {Monoms = new List<Monom> {new Monom {Coefficient = double.Parse(context.GetText())}}};
         }
 
-        public override Polynom VisitInteger(PolynomialParser.IntegerContext context)
-        {
-            return new Polynom {Monoms = new List<Monom> {new Monom {Coefficient = int.Parse(context.GetText())}}};
-        }
-
-        public override Polynom VisitMonomial(PolynomialParser.MonomialContext context)
+        public override Polynom VisitAddend(PolynomialParser.AddendContext context)
         {
             var polynom = new Polynom();
-            var realCoefficientContext = context.DOUBLE();
-            if (realCoefficientContext is null)
+            var coefficientContext = context.coefficient();
+            if (coefficientContext is null)
             {
-                var digits = context.INT();
-                if (digits != null && digits.Any())
+                var power = context.POWER();
+                if (power is null)
                 {
-                    var intCoefficient = digits.First().GetText();
-                    var power = digits.Skip(1).FirstOrDefault();
-                    if (power is null)
-                    {
-                        polynom.Monoms.Add(new Monom
-                        {
-                            Coefficient = int.Parse(intCoefficient),
-                            Variable = context.VAR().GetText()
-                        });
-                        return polynom;
-                    }
-
                     polynom.Monoms.Add(new Monom
                     {
-                        Coefficient = int.Parse(intCoefficient),
-                        Variable = context.VAR().GetText(),
-                        Power = int.Parse(power.GetText())
-                    });
-                    return polynom;
-                }
-            }
-            else
-            {
-                var realCoefficient = realCoefficientContext.GetText();
-                var digits = context.INT();
-                if (digits.Any())
-                {
-                    var power = digits.First().GetText();
-                    polynom.Monoms.Add(new Monom
-                    {
-                        Coefficient = double.Parse(realCoefficient),
-                        Variable = context.VAR().GetText(),
-                        Power = int.Parse(power)
+                        Variable = context.VAR().GetText()
                     });
                     return polynom;
                 }
 
                 polynom.Monoms.Add(new Monom
                 {
-                    Coefficient = double.Parse(realCoefficient),
-                    Variable = context.VAR().GetText()
+                    Variable = context.VAR().GetText(),
+                    Power = int.Parse(power.GetText())
                 });
                 return polynom;
             }
-
-            polynom.Monoms.Add(new Monom
+            else
             {
-                Variable = context.VAR().GetText()
-            });
-            return polynom;
+                var coefficient = coefficientContext.GetText();
+                var power = context.POWER();
+                if (power is null)
+                {
+                    polynom.Monoms.Add(new Monom
+                    {
+                        Coefficient = double.Parse(coefficient),
+                        Variable = context.VAR().GetText()
+                    });
+                    return polynom;
+                }
+
+                polynom.Monoms.Add(new Monom
+                {
+                    Coefficient = double.Parse(coefficient),
+                    Variable = context.VAR().GetText(),
+                    Power = int.Parse(power.GetText())
+                });
+                return polynom;
+            }
         }
 
         public override Polynom VisitAddSub(PolynomialParser.AddSubContext context)
         {
-            Polynom canonical = new Polynom();
-            Polynom left = Visit(context.polynomial(0));
-            Polynom right = Visit(context.polynomial(1));
-            if (left.Monoms.Count == 1 && right.Monoms.Count == 1)
+            List<Monom> monoms = context.monomial().Select(Visit).SelectMany(x => x.Monoms).ToList();
+            var operations = context.SIGN().ToList();
+            var currentMonomIndex = 0;
+            var monomsCount = monoms.Count - 1;
+            bool joined = false;
+            while (currentMonomIndex < monomsCount)
             {
-                var leftMonom = left.Monoms.First();
-                var rightMonom = right.Monoms.First();
-                if (leftMonom.GetHashCode() == rightMonom.GetHashCode())
+                var addendMonomIndex = currentMonomIndex + 1;
+                while (addendMonomIndex <= monomsCount)
                 {
-                    canonical.Monoms.Add(new Monom
+                    joined = JoinToCurrentIfHashCodesEqual(monoms[currentMonomIndex], monoms[addendMonomIndex], operations[currentMonomIndex]);
+                    if (joined)
                     {
-                        Coefficient = leftMonom.Coefficient + rightMonom.Coefficient,
-                        Power = leftMonom.Power,
-                        Variable = leftMonom.Variable
-                    });
+                        monomsCount--;
+                        monoms.Remove(monoms[addendMonomIndex]);
+                        operations.Remove(operations[currentMonomIndex]);
+                        break;
+                    }
+
+                    addendMonomIndex++;
+                }
+
+                if (joined)
+                {
+                    currentMonomIndex = 0;
+                    joined = false;
                 }
                 else
                 {
-                    canonical.Monoms.Add(leftMonom);
-                    canonical.Monoms.Add(rightMonom);
+                    currentMonomIndex++;
                 }
             }
 
-            return canonical;
-            // foreach (var leftMonom in left.Monoms)
-            // {
-            //     foreach (var rightMonom in right.Monoms)
-            //     {
-            //         var leftHashCode = left.GetHashCode();
-            //         var rightHashCode = right.GetHashCode();
-            //         if (leftHashCode == rightHashCode)
-            //         {
-            //             switch (context.op.Type)
-            //             {
-            //                 case PolynomialParser.ADD:
-            //                     break;
-            //                 case PolynomialParser.SUB:
-            //                     break;
-            //                 default:
-            //                     break;
-            //             }
-            //         }
-            //         else
-            //         {
-            //             canonical.Monoms.Add(rightMonom);
-            //         }
-            //     }
-            // }
-            //
-            // return canonical;
+            return new Polynom {Monoms = monoms, Operations = operations.Select(x => x.GetText()).ToList()};
+        }
+
+        private static bool JoinToCurrentIfHashCodesEqual(Monom currentMonom, Monom addendMonom, ITerminalNode operation)
+        {
+            if (currentMonom.GetHashCode() == addendMonom.GetHashCode())
+            {
+                if (operation.GetText() == "+")
+                {
+                    currentMonom.Coefficient += addendMonom.Coefficient;
+                    return true;
+                }
+
+                currentMonom.Coefficient -= addendMonom.Coefficient;
+                return true;
+            }
+
+            return false;
         }
     }
 }

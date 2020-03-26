@@ -31,42 +31,6 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IPolynomialListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by the <c>parens</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterParens([NotNull] PolynomialParser.ParensContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>parens</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitParens([NotNull] PolynomialParser.ParensContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>monomial</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMonomial([NotNull] PolynomialParser.MonomialContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>monomial</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMonomial([NotNull] PolynomialParser.MonomialContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>double</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterDouble([NotNull] PolynomialParser.DoubleContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>double</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitDouble([NotNull] PolynomialParser.DoubleContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>addSub</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>
@@ -79,15 +43,49 @@ public interface IPolynomialListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitAddSub([NotNull] PolynomialParser.AddSubContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>integer</c>
+	/// Enter a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterInteger([NotNull] PolynomialParser.IntegerContext context);
+	void EnterParens([NotNull] PolynomialParser.ParensContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>integer</c>
+	/// Exit a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitInteger([NotNull] PolynomialParser.IntegerContext context);
+	void ExitParens([NotNull] PolynomialParser.ParensContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>addend</c>
+	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAddend([NotNull] PolynomialParser.AddendContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>addend</c>
+	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAddend([NotNull] PolynomialParser.AddendContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNumber([NotNull] PolynomialParser.NumberContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>number</c>
+	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNumber([NotNull] PolynomialParser.NumberContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolynomialParser.coefficient"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCoefficient([NotNull] PolynomialParser.CoefficientContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolynomialParser.coefficient"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCoefficient([NotNull] PolynomialParser.CoefficientContext context);
 }

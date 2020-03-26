@@ -1,16 +1,21 @@
 grammar Polynomial;
 
-polynomial      : polynomial op=('+'|'-') polynomial   #addSub
-                | '(' polynomial ')'                   #parens
-                | SUB? DOUBLE? INT? VAR ('^' INT)?     #monomial
-                | DOUBLE                               #double
-                | INT                                  #integer
+polynomial      : (SIGN? monomial)(SIGN monomial)*          #addSub
+                | '(' polynomial ')'                        #parens
                 ;
 
+monomial        : coefficient? VAR ('^' POWER)?             #addend
+                | coefficient                               #number
+                ;
 
-DOUBLE                  : ('0'..'9')+ '.'+ ('0'..'9')*;
-INT                     : [0-9]+;
+coefficient     : INT | DEC;
+
+
+fragment DIGIT : [0-9];
+
+INT                     : ('0'..'9')+;
+POWER                   : INT;
+DEC                     : INT '.' INT;
 VAR                     : [a-z]+;
-ADD                     : '+';
-SUB                     : '-';
+SIGN                    : '+' | '-';
 WHITESPACE              : (' '|'\t')+ -> skip;
