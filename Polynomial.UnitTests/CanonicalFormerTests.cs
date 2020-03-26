@@ -12,7 +12,7 @@ namespace Polynomial.UnitTests
         [InlineData("-x-4-3+2", "-x-5")]
         [InlineData("x+xy+y^2", "x+xy+y^2")]
         [InlineData("10+y^4-y^4", "10")]
-        public void ToCanonical_ShouldReturnCanonicalForm(string expression, string expected)
+        public void ToCanonical_ShouldBeInCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();
 

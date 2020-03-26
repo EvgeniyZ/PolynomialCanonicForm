@@ -16,23 +16,10 @@ namespace Polynomial.WebApi.Entities
         public override string ToString()
         {
             var canonical = new StringBuilder();
-            if (Monoms.Any())
+            foreach (var monom in Monoms)
             {
-                var headliner = Monoms.First();
-                if (headliner.Coefficient < 0)
-                {
-                    canonical.Append(headliner);
-                }
-                else
-                {
-                    canonical.Append(headliner.ToHeadlinerString());
-                }
-                foreach (var monom in Monoms.Skip(1))
-                {
-                    canonical.Append(monom);
-                }
+                canonical.Append(monom);
             }
-            
 
             return canonical.ToString();
         }

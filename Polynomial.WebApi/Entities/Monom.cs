@@ -21,21 +21,6 @@ namespace Polynomial.WebApi.Entities
             return Variable.OrderBy(x => x).ToString().GetHashCode() ^ Power;
         }
 
-        public string ToHeadlinerString()
-        {
-            if (Power > 0)
-            {
-                if (string.IsNullOrEmpty(Variable))
-                {
-                    throw new Exception($"Power {Power} specified but no Variable set");
-                }
-
-                return $"{CoefficientToString(Coefficient, true)}{Variable}{PowerToString(Power)}";
-            }
-
-            return $"{CoefficientToString(Coefficient, true)}{Variable}";
-        }
-
         public override string ToString()
         {
             if (Coefficient == 0)
@@ -63,6 +48,11 @@ namespace Polynomial.WebApi.Entities
                 return $"{CoefficientToString(Coefficient)}{Variable}{PowerToString(Power)}";
             }
 
+            if (Power == 0)
+            {
+                return $"{CoefficientToString(Coefficient)}";
+            }
+
             return $"{CoefficientToString(Coefficient)}{Variable}";
         }
 
@@ -76,23 +66,14 @@ namespace Polynomial.WebApi.Entities
             return string.Empty;
         }
 
-        private static string CoefficientToString(double coefficient, bool headliner = false)
+        private static string CoefficientToString(double coefficient)
         {
             if (coefficient == 1)
             {
                 return string.Empty;
             }
 
-            if (coefficient > 0)
-            {
-                if (headliner)
-                {
-                    return $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
-                }
-                return $"+{coefficient.ToString(CultureInfo.InvariantCulture)}";
-            }
-
-            return $"-{coefficient.ToString(CultureInfo.InvariantCulture)}";
+            return $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }
