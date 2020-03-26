@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Polynomial.WebApi.Entities
@@ -9,7 +10,7 @@ namespace Polynomial.WebApi.Entities
         public int Power { get; set; }
         public string Variable { get; set; }
 
-        public override int GetHashCode()
+        public int GetIdentifier()
         {
             if (string.IsNullOrEmpty(Variable))
             {
@@ -22,7 +23,7 @@ namespace Polynomial.WebApi.Entities
 
         public override string ToString()
         {
-            if (Math.Abs(Coefficient) < Double.Epsilon)
+            if (Coefficient == 0)
             {
                 if (Power > 0)
                 {
@@ -31,7 +32,7 @@ namespace Polynomial.WebApi.Entities
                         throw new Exception($"Power {Power} specified but no Variable set");
                     }
 
-                    return $"{Variable}^{Power}";
+                    return $"{Variable}{PowerToString(Power)}";
                 }
 
                 return $"{Variable}";
@@ -44,10 +45,30 @@ namespace Polynomial.WebApi.Entities
                     throw new Exception($"Power {Power} specified but no Variable set");
                 }
 
-                return $"{Coefficient}{Variable}^{Power}";
+                return $"{CoefficientToString(Coefficient)}{Variable}{PowerToString(Power)}";
             }
 
-            return $"{Coefficient}{Variable}";
+            return $"{CoefficientToString(Coefficient)}{Variable}";
+        }
+
+        private string PowerToString(int power)
+        {
+            if (power > 1)
+            {
+                return $"^{power}";
+            }
+
+            return string.Empty;
+        }
+
+        private string CoefficientToString(double coefficient)
+        {
+            if (coefficient == 1)
+            {
+                return string.Empty;
+            }
+
+            return coefficient.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

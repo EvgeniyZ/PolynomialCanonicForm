@@ -81,7 +81,7 @@ namespace Polynomial.WebApi.Services
                 var addendMonomIndex = currentMonomIndex + 1;
                 while (addendMonomIndex <= monomsCount)
                 {
-                    joined = JoinToCurrentIfHashCodesEqual(monoms[currentMonomIndex], monoms[addendMonomIndex], operations[currentMonomIndex]);
+                    joined = JoinToCurrentIfIdentifiersEqual(monoms[currentMonomIndex], monoms[addendMonomIndex], operations[currentMonomIndex]);
                     if (joined)
                     {
                         monomsCount--;
@@ -105,13 +105,36 @@ namespace Polynomial.WebApi.Services
             }
 
             //TODO : Remove from monoms and operations that monoms which coefficient is ZERO
+            var (nonZeroMonoms, nonZeroOperations) = SkipMonomsAndOperationsWithZeroCoefficient(monoms, operations);
 
-            return new Polynom {Monoms = monoms, Operations = operations.Select(x => x.GetText()).ToList()};
+            return new Polynom {Monoms = nonZeroMonoms, Operations = nonZeroOperations.Select(x => x.GetText()).ToList()};
         }
 
-        private static bool JoinToCurrentIfHashCodesEqual(Monom currentMonom, Monom addendMonom, ITerminalNode operation)
+        private static (List<Monom> nonZeroMonoms, List<ITerminalNode> nonZeroOperations) SkipMonomsAndOperationsWithZeroCoefficient(List<Monom> monoms,
+            List<ITerminalNode> operations)
         {
-            if (currentMonom.GetHashCode() == addendMonom.GetHashCode())
+            var nonZeroMonoms = new List<Monom>();
+            var nonZeroOperations = new List<ITerminalNode>();
+            for (int i = 0; i < monoms.Count; i++)
+            {
+                if (monoms[i].Coefficient == 0)
+                {
+                    continue;
+                }
+
+                nonZeroMonoms.Add(monoms[i]);
+                if (i > 0)
+                {
+                    nonZeroOperations.Add(operations[i - 1]);
+                }
+            }
+
+            return (nonZeroMonoms, nonZeroOperations);
+        }
+
+        private static bool JoinToCurrentIfIdentifiersEqual(Monom currentMonom, Monom addendMonom, ITerminalNode operation)
+        {
+            if (currentMonom.GetIdentifier() == addendMonom.GetIdentifier())
             {
                 if (operation.GetText() == "+")
                 {
