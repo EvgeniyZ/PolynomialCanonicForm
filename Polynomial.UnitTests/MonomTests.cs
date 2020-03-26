@@ -32,6 +32,10 @@ namespace Polynomial.UnitTests
             {
                 new Monom {Coefficient = 2, Power = 2, Variable = "x"}, "2x^2"
             };
+            yield return new object[]
+            {
+                new Monom {Coefficient = -1, Power = 1, Variable = "x"}, "-x"
+            };
         }
     }
 }

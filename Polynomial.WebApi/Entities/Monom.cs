@@ -73,6 +73,11 @@ namespace Polynomial.WebApi.Entities
                 return string.Empty;
             }
 
+            if (coefficient == -1)
+            {
+                return "-";
+            }
+
             return $"{coefficient.ToString(CultureInfo.InvariantCulture)}";
         }
     }
