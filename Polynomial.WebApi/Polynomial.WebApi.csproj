@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+<!--    <Target Name="PrecompileGrammar" BeforeTargets="BeforeBuild">-->
+<!--      <Exec Command="java -jar .\Grammar\antlr-4.8-complete.jar -Dlanguage=CSharp -visitor Polynomial.g4 -o .\Traversing\ " />-->
+<!--    </Target>-->
+
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>

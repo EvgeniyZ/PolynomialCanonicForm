@@ -73,6 +73,7 @@ namespace Polynomial.WebApi.Services
         {
             List<Monom> monoms = context.monomial().Select(Visit).SelectMany(x => x.Monoms).ToList();
             var operations = context.SIGN().ToList();
+            SetCoefficientsSignsToMonoms(monoms, operations);
             var currentMonomIndex = 0;
             var monomsCount = monoms.Count - 1;
             bool joined = false;
@@ -81,7 +82,7 @@ namespace Polynomial.WebApi.Services
                 var addendMonomIndex = currentMonomIndex + 1;
                 while (addendMonomIndex <= monomsCount)
                 {
-                    joined = JoinToCurrentIfIdentifiersEqual(monoms[currentMonomIndex], monoms[addendMonomIndex], operations[currentMonomIndex]);
+                    joined = TryJoinToCurrentIfIdentifiersEqual(monoms[currentMonomIndex], monoms[addendMonomIndex]);
                     if (joined)
                     {
                         monomsCount--;
@@ -105,44 +106,39 @@ namespace Polynomial.WebApi.Services
             }
 
             //TODO : Remove from monoms and operations that monoms which coefficient is ZERO
-            var (nonZeroMonoms, nonZeroOperations) = SkipMonomsAndOperationsWithZeroCoefficient(monoms, operations);
 
-            return new Polynom {Monoms = nonZeroMonoms, Operations = nonZeroOperations.Select(x => x.GetText()).ToList()};
+            return new Polynom {Monoms = monoms.Where(x => x.Coefficient != 0).ToList()};
         }
 
-        private static (List<Monom> nonZeroMonoms, List<ITerminalNode> nonZeroOperations) SkipMonomsAndOperationsWithZeroCoefficient(List<Monom> monoms,
-            List<ITerminalNode> operations)
+        private static void SetCoefficientsSignsToMonoms(List<Monom> monoms, List<ITerminalNode> operations)
         {
-            var nonZeroMonoms = new List<Monom>();
-            var nonZeroOperations = new List<ITerminalNode>();
-            for (int i = 0; i < monoms.Count; i++)
+            var monomIndex = 0;
+            var startedWithMinus = monoms.Count == operations.Count;
+            if (!startedWithMinus)
             {
-                if (monoms[i].Coefficient == 0)
-                {
-                    continue;
-                }
-
-                nonZeroMonoms.Add(monoms[i]);
-                if (i > 0)
-                {
-                    nonZeroOperations.Add(operations[i - 1]);
-                }
+                monomIndex++;
             }
 
-            return (nonZeroMonoms, nonZeroOperations);
+            foreach (var operation in operations)
+            {
+                switch (operation.GetText())
+                {
+                    case "+":
+                        break;
+                    case "-":
+                        monoms[monomIndex].Coefficient *= -1;
+                        break;
+                }
+
+                monomIndex++;
+            }
         }
 
-        private static bool JoinToCurrentIfIdentifiersEqual(Monom currentMonom, Monom addendMonom, ITerminalNode operation)
+        private static bool TryJoinToCurrentIfIdentifiersEqual(Monom currentMonom, Monom addendMonom)
         {
             if (currentMonom.GetIdentifier() == addendMonom.GetIdentifier())
             {
-                if (operation.GetText() == "+")
-                {
-                    currentMonom.Coefficient += addendMonom.Coefficient;
-                    return true;
-                }
-
-                currentMonom.Coefficient -= addendMonom.Coefficient;
+                currentMonom.Coefficient += addendMonom.Coefficient;
                 return true;
             }
 

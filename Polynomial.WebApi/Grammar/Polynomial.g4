@@ -4,7 +4,7 @@ polynomial      : (SIGN? monomial)(SIGN monomial)*          #addSub
                 | '(' polynomial ')'                        #parens
                 ;
 
-monomial        : coefficient? VAR ('^' INT)?             #addend
+monomial        : coefficient? VAR ('^' INT)?               #addend
                 | coefficient                               #number
                 ;
 

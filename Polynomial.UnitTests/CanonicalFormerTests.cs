@@ -9,6 +9,7 @@ namespace Polynomial.UnitTests
         [InlineData("3+1+2", "6")]
         [InlineData("x+3+1+2", "x+6")]
         [InlineData("x-4-3+2", "x-5")]
+        [InlineData("-x-4-3+2", "-x-5")]
         [InlineData("x+xy+y^2", "x+xy+y^2")]
         [InlineData("10+y^4-y^4", "10")]
         public void ToCanonical_ShouldReturnCanonicalForm(string expression, string expected)

@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Polynomial.WebApi.Entities
@@ -12,20 +12,27 @@ namespace Polynomial.WebApi.Entities
         }
 
         public IList<Monom> Monoms { get; set; }
-        public IList<string> Operations { get; set; }
 
         public override string ToString()
         {
             var canonical = new StringBuilder();
-            for (int i = 0; i < Monoms.Count; i++)
+            if (Monoms.Any())
             {
-                canonical.Append(Monoms[i]);
-                if (i > Operations.Count - 1)
+                var headliner = Monoms.First();
+                if (headliner.Coefficient < 0)
                 {
-                    continue;
+                    canonical.Append(headliner);
                 }
-                canonical.Append(Operations[i]);
+                else
+                {
+                    canonical.Append(headliner.ToHeadlinerString());
+                }
+                foreach (var monom in Monoms.Skip(1))
+                {
+                    canonical.Append(monom);
+                }
             }
+            
 
             return canonical.ToString();
         }
