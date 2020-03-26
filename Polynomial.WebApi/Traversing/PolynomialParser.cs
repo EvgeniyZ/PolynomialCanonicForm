@@ -36,7 +36,7 @@ public partial class PolynomialParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, INT=4, POWER=5, DEC=6, VAR=7, SIGN=8, WHITESPACE=9;
+		T__0=1, T__1=2, T__2=3, INT=4, DEC=5, VAR=6, SIGN=7, WHITESPACE=8;
 	public const int
 		RULE_polynomial = 0, RULE_monomial = 1, RULE_coefficient = 2;
 	public static readonly string[] ruleNames = {
@@ -47,7 +47,7 @@ public partial class PolynomialParser : Parser {
 		null, "'('", "')'", "'^'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, "INT", "POWER", "DEC", "VAR", "SIGN", "WHITESPACE"
+		null, null, null, null, "INT", "DEC", "VAR", "SIGN", "WHITESPACE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -243,7 +243,7 @@ public partial class PolynomialParser : Parser {
 		public CoefficientContext coefficient() {
 			return GetRuleContext<CoefficientContext>(0);
 		}
-		public ITerminalNode POWER() { return GetToken(PolynomialParser.POWER, 0); }
+		public ITerminalNode INT() { return GetToken(PolynomialParser.INT, 0); }
 		public AddendContext(MonomialContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			IPolynomialListener typedListener = listener as IPolynomialListener;
@@ -289,7 +289,7 @@ public partial class PolynomialParser : Parser {
 				if (_la==T__2) {
 					{
 					State = 28; Match(T__2);
-					State = 29; Match(POWER);
+					State = 29; Match(INT);
 					}
 				}
 
@@ -370,7 +370,7 @@ public partial class PolynomialParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\v', '(', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', '\t', 
+		'\x5964', '\x3', '\n', '(', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', '\t', 
 		'\x3', '\x4', '\x4', '\t', '\x4', '\x3', '\x2', '\x5', '\x2', '\n', '\n', 
 		'\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\a', '\x2', 
 		'\x10', '\n', '\x2', '\f', '\x2', '\xE', '\x2', '\x13', '\v', '\x2', '\x3', 
@@ -378,31 +378,31 @@ public partial class PolynomialParser : Parser {
 		'\n', '\x2', '\x3', '\x3', '\x5', '\x3', '\x1C', '\n', '\x3', '\x3', '\x3', 
 		'\x3', '\x3', '\x3', '\x3', '\x5', '\x3', '!', '\n', '\x3', '\x3', '\x3', 
 		'\x5', '\x3', '$', '\n', '\x3', '\x3', '\x4', '\x3', '\x4', '\x3', '\x4', 
-		'\x2', '\x2', '\x5', '\x2', '\x4', '\x6', '\x2', '\x3', '\x4', '\x2', 
-		'\x6', '\x6', '\b', '\b', '\x2', '*', '\x2', '\x18', '\x3', '\x2', '\x2', 
-		'\x2', '\x4', '#', '\x3', '\x2', '\x2', '\x2', '\x6', '%', '\x3', '\x2', 
-		'\x2', '\x2', '\b', '\n', '\a', '\n', '\x2', '\x2', '\t', '\b', '\x3', 
-		'\x2', '\x2', '\x2', '\t', '\n', '\x3', '\x2', '\x2', '\x2', '\n', '\v', 
-		'\x3', '\x2', '\x2', '\x2', '\v', '\f', '\x5', '\x4', '\x3', '\x2', '\f', 
-		'\x11', '\x3', '\x2', '\x2', '\x2', '\r', '\xE', '\a', '\n', '\x2', '\x2', 
-		'\xE', '\x10', '\x5', '\x4', '\x3', '\x2', '\xF', '\r', '\x3', '\x2', 
-		'\x2', '\x2', '\x10', '\x13', '\x3', '\x2', '\x2', '\x2', '\x11', '\xF', 
-		'\x3', '\x2', '\x2', '\x2', '\x11', '\x12', '\x3', '\x2', '\x2', '\x2', 
-		'\x12', '\x19', '\x3', '\x2', '\x2', '\x2', '\x13', '\x11', '\x3', '\x2', 
-		'\x2', '\x2', '\x14', '\x15', '\a', '\x3', '\x2', '\x2', '\x15', '\x16', 
-		'\x5', '\x2', '\x2', '\x2', '\x16', '\x17', '\a', '\x4', '\x2', '\x2', 
-		'\x17', '\x19', '\x3', '\x2', '\x2', '\x2', '\x18', '\t', '\x3', '\x2', 
-		'\x2', '\x2', '\x18', '\x14', '\x3', '\x2', '\x2', '\x2', '\x19', '\x3', 
-		'\x3', '\x2', '\x2', '\x2', '\x1A', '\x1C', '\x5', '\x6', '\x4', '\x2', 
-		'\x1B', '\x1A', '\x3', '\x2', '\x2', '\x2', '\x1B', '\x1C', '\x3', '\x2', 
-		'\x2', '\x2', '\x1C', '\x1D', '\x3', '\x2', '\x2', '\x2', '\x1D', ' ', 
-		'\a', '\t', '\x2', '\x2', '\x1E', '\x1F', '\a', '\x5', '\x2', '\x2', '\x1F', 
-		'!', '\a', '\a', '\x2', '\x2', ' ', '\x1E', '\x3', '\x2', '\x2', '\x2', 
-		' ', '!', '\x3', '\x2', '\x2', '\x2', '!', '$', '\x3', '\x2', '\x2', '\x2', 
-		'\"', '$', '\x5', '\x6', '\x4', '\x2', '#', '\x1B', '\x3', '\x2', '\x2', 
-		'\x2', '#', '\"', '\x3', '\x2', '\x2', '\x2', '$', '\x5', '\x3', '\x2', 
-		'\x2', '\x2', '%', '&', '\t', '\x2', '\x2', '\x2', '&', '\a', '\x3', '\x2', 
-		'\x2', '\x2', '\b', '\t', '\x11', '\x18', '\x1B', ' ', '#',
+		'\x2', '\x2', '\x5', '\x2', '\x4', '\x6', '\x2', '\x3', '\x3', '\x2', 
+		'\x6', '\a', '\x2', '*', '\x2', '\x18', '\x3', '\x2', '\x2', '\x2', '\x4', 
+		'#', '\x3', '\x2', '\x2', '\x2', '\x6', '%', '\x3', '\x2', '\x2', '\x2', 
+		'\b', '\n', '\a', '\t', '\x2', '\x2', '\t', '\b', '\x3', '\x2', '\x2', 
+		'\x2', '\t', '\n', '\x3', '\x2', '\x2', '\x2', '\n', '\v', '\x3', '\x2', 
+		'\x2', '\x2', '\v', '\f', '\x5', '\x4', '\x3', '\x2', '\f', '\x11', '\x3', 
+		'\x2', '\x2', '\x2', '\r', '\xE', '\a', '\t', '\x2', '\x2', '\xE', '\x10', 
+		'\x5', '\x4', '\x3', '\x2', '\xF', '\r', '\x3', '\x2', '\x2', '\x2', '\x10', 
+		'\x13', '\x3', '\x2', '\x2', '\x2', '\x11', '\xF', '\x3', '\x2', '\x2', 
+		'\x2', '\x11', '\x12', '\x3', '\x2', '\x2', '\x2', '\x12', '\x19', '\x3', 
+		'\x2', '\x2', '\x2', '\x13', '\x11', '\x3', '\x2', '\x2', '\x2', '\x14', 
+		'\x15', '\a', '\x3', '\x2', '\x2', '\x15', '\x16', '\x5', '\x2', '\x2', 
+		'\x2', '\x16', '\x17', '\a', '\x4', '\x2', '\x2', '\x17', '\x19', '\x3', 
+		'\x2', '\x2', '\x2', '\x18', '\t', '\x3', '\x2', '\x2', '\x2', '\x18', 
+		'\x14', '\x3', '\x2', '\x2', '\x2', '\x19', '\x3', '\x3', '\x2', '\x2', 
+		'\x2', '\x1A', '\x1C', '\x5', '\x6', '\x4', '\x2', '\x1B', '\x1A', '\x3', 
+		'\x2', '\x2', '\x2', '\x1B', '\x1C', '\x3', '\x2', '\x2', '\x2', '\x1C', 
+		'\x1D', '\x3', '\x2', '\x2', '\x2', '\x1D', ' ', '\a', '\b', '\x2', '\x2', 
+		'\x1E', '\x1F', '\a', '\x5', '\x2', '\x2', '\x1F', '!', '\a', '\x6', '\x2', 
+		'\x2', ' ', '\x1E', '\x3', '\x2', '\x2', '\x2', ' ', '!', '\x3', '\x2', 
+		'\x2', '\x2', '!', '$', '\x3', '\x2', '\x2', '\x2', '\"', '$', '\x5', 
+		'\x6', '\x4', '\x2', '#', '\x1B', '\x3', '\x2', '\x2', '\x2', '#', '\"', 
+		'\x3', '\x2', '\x2', '\x2', '$', '\x5', '\x3', '\x2', '\x2', '\x2', '%', 
+		'&', '\t', '\x2', '\x2', '\x2', '&', '\a', '\x3', '\x2', '\x2', '\x2', 
+		'\b', '\t', '\x11', '\x18', '\x1B', ' ', '#',
 	};
 
 	public static readonly ATN _ATN =

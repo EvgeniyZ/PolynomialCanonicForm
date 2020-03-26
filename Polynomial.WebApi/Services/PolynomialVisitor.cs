@@ -24,18 +24,21 @@ namespace Polynomial.WebApi.Services
             var coefficientContext = context.coefficient();
             if (coefficientContext is null)
             {
-                var power = context.POWER();
+                var power = context.INT();
                 if (power is null)
                 {
                     polynom.Monoms.Add(new Monom
                     {
-                        Variable = context.VAR().GetText()
+                        Coefficient = 1,
+                        Variable = context.VAR().GetText(),
+                        Power = 1
                     });
                     return polynom;
                 }
 
                 polynom.Monoms.Add(new Monom
                 {
+                    Coefficient = 1,
                     Variable = context.VAR().GetText(),
                     Power = int.Parse(power.GetText())
                 });
@@ -44,13 +47,14 @@ namespace Polynomial.WebApi.Services
             else
             {
                 var coefficient = coefficientContext.GetText();
-                var power = context.POWER();
+                var power = context.INT();
                 if (power is null)
                 {
                     polynom.Monoms.Add(new Monom
                     {
                         Coefficient = double.Parse(coefficient),
-                        Variable = context.VAR().GetText()
+                        Variable = context.VAR().GetText(),
+                        Power = 1
                     });
                     return polynom;
                 }
@@ -99,6 +103,8 @@ namespace Polynomial.WebApi.Services
                     currentMonomIndex++;
                 }
             }
+
+            //TODO : Remove from monoms and operations that monoms which coefficient is ZERO
 
             return new Polynom {Monoms = monoms, Operations = operations.Select(x => x.GetText()).ToList()};
         }
