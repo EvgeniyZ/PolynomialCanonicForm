@@ -43,6 +43,14 @@ namespace Polynomial.UnitTests
             {
                 new Monom {Coefficient = -1, Power = 1, Variable = "x"}, "-x"
             };
+            yield return new object[]
+            {
+                new Monom {Coefficient = 1, Power = 0, Variable = null}, "1"
+            };
+            yield return new object[]
+            {
+                new Monom {Coefficient = -1, Power = 0, Variable = null}, "-1"
+            };
         }
 
         public static IEnumerable<object[]> MonomToStringCases()
@@ -70,6 +78,14 @@ namespace Polynomial.UnitTests
             yield return new object[]
             {
                 new Monom {Coefficient = 1, Power = 1, Variable = "xy"}, "+xy"
+            };
+            yield return new object[]
+            {
+                new Monom {Coefficient = 1, Power = 0, Variable = null}, "+1"
+            };
+            yield return new object[]
+            {
+                new Monom {Coefficient = -1, Power = 0, Variable = null}, "-1"
             };
         }
     }

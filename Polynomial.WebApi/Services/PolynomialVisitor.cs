@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
@@ -10,7 +9,19 @@ namespace Polynomial.WebApi.Services
     {
         public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
-            return Visit(context.polynomial());
+            var sign = context.SIGN();
+            if (sign is null || sign.GetText() == "+")
+            {
+                return Visit(context.polynomial());
+            }
+
+            var polynomial = Visit(context.polynomial());
+            foreach (var monom in polynomial.Monoms)
+            {
+                monom.Coefficient *= -1;
+            }
+
+            return polynomial;
         }
 
         public override Polynom VisitNumber(PolynomialParser.NumberContext context)

@@ -72,7 +72,7 @@ namespace Polynomial.WebApi.Entities
 
             if (Power == 0)
             {
-                return $"{CoefficientToString(Coefficient)}";
+                return $"{CoefficientToString(Coefficient, true)}";
             }
 
             return $"{CoefficientToString(Coefficient)}{Variable}";
@@ -88,15 +88,23 @@ namespace Polynomial.WebApi.Entities
             return string.Empty;
         }
 
-        private static string CoefficientToString(double coefficient)
+        private static string CoefficientToString(double coefficient, bool powerIsZero = false)
         {
             if (coefficient == 1)
             {
+                if (powerIsZero)
+                {
+                    return "+1";
+                }
                 return "+";
             }
 
             if (coefficient == -1)
             {
+                if (powerIsZero)
+                {
+                    return "-1";
+                }
                 return "-";
             }
 
