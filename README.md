@@ -7,6 +7,9 @@ x^2+3.5xy+y=y^2-xy+y -> x^2+4.5xy-y^2
 ```
 More examples you can find in Polynomial.UnitTests.CanonicalFormerTests
 
+### Supported operations
+They're defined in ```Polynomial.g4```, right now it's '+', '-', '='
+
 ## Prerequisites
 Polynomial.WebApi uses ANTLR4. In case if you want to regenerate classes by changing a grammar
 you must:
