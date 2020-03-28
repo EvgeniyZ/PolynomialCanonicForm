@@ -6,6 +6,17 @@ namespace Polynomial.UnitTests
     public class CanonicalFormerTests
     {
         [Theory]
+        [InlineData("12=")]
+        public void ToCanonical_InvalidExpression_ShouldReturnErrorMessage(string expression)
+        {
+            var canonicalFormer = new CanonicalFormer();
+
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
+
+            Assert.NotEmpty(errorMessage);
+        }
+        
+        [Theory]
         [InlineData("12=44", "-32")]
         [InlineData("x^2+3.5xy+y=y^2-xy+y", "x^2+4.5xy-y^2")]
         [InlineData("-(22+44x^2)+(11+44y^2)-(123)=55-asd+a^2", "-189-44x^2+44y^2+asd-a^2")]
@@ -13,9 +24,9 @@ namespace Polynomial.UnitTests
         {
             var canonicalFormer = new CanonicalFormer();
 
-            string result = canonicalFormer.ToCanonical(expression);
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, canonical);
         }
 
         [Theory]
@@ -28,9 +39,9 @@ namespace Polynomial.UnitTests
         {
             var canonicalFormer = new CanonicalFormer();
 
-            string result = canonicalFormer.ToCanonical(expression);
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, canonical);
         }
 
         [Theory]
@@ -45,9 +56,9 @@ namespace Polynomial.UnitTests
         {
             var canonicalFormer = new CanonicalFormer();
 
-            string result = canonicalFormer.ToCanonical(expression);
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, canonical);
         }
 
         [Theory]
@@ -60,9 +71,9 @@ namespace Polynomial.UnitTests
         {
             var canonicalFormer = new CanonicalFormer();
 
-            string result = canonicalFormer.ToCanonical(expression);
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, canonical);
         }
 
         [Theory]
@@ -75,9 +86,9 @@ namespace Polynomial.UnitTests
         {
             var canonicalFormer = new CanonicalFormer();
 
-            string result = canonicalFormer.ToCanonical(expression);
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected, canonical);
         }
     }
 }

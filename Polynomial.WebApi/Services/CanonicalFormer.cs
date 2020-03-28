@@ -1,32 +1,46 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
+using Polynomial.WebApi.Traversing;
 
 namespace Polynomial.WebApi.Services
 {
     public class CanonicalFormer
     {
-        public string ToCanonical(string expression)
+        public (string canonical, string errorMessage) ToCanonical(string expression)
         {
-            var tree = GetParsedTree(expression);
+            (IParseTree tree, string parseErrorMessage) = TryParseExpression(expression);
+            if (string.IsNullOrEmpty(parseErrorMessage))
+            {
+                PolynomialVisitor polynomialVisitor = new PolynomialVisitor();
+                Polynom canonical = polynomialVisitor.Visit(tree);
 
-            PolynomialVisitor polynomialVisitor = new PolynomialVisitor();
-            Polynom canonical = polynomialVisitor.Visit(tree);
+                return (canonical.ToString(), string.Empty);
+            }
 
-            return canonical.ToString();
+            return (string.Empty, parseErrorMessage);
         }
 
-        private static IParseTree GetParsedTree(string expression)
+        private static (IParseTree tree, string parseErrorMessage) TryParseExpression(string expression)
         {
             ICharStream stream = CharStreams.fromstring(expression);
             ITokenSource lexer = new PolynomialLexer(stream);
+
             ITokenStream tokens = new CommonTokenStream(lexer);
-            PolynomialParser parser = new PolynomialParser(tokens);
+            PolynomialParser parser = new PolynomialParser(tokens) {BuildParseTree = true};
+            parser.RemoveErrorListeners();
+            parser.AddErrorListener(new PolynomialErrorListener());
 
-            parser.BuildParseTree = true;
-            IParseTree tree = parser.canonical();
-
-            return tree;
+            try
+            {
+                var tree = parser.canonical();
+                return (tree, string.Empty);
+            }
+            catch (ParseCanceledException pce)
+            {
+                return (null, pce.Message);
+            }
         }
     }
 }
