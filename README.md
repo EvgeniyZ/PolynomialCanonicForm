@@ -1,5 +1,4 @@
 # Polynomial Canonical Form
-Cast polynomial to a canonical form
 ASP.Net core service that reduces given expression to a canonic form.
 ```
 10+y^4+(y^4+44) -> 54+2y^4
