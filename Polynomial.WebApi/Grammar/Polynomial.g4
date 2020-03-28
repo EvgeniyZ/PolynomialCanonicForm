@@ -1,6 +1,6 @@
 grammar Polynomial;
 
-canonical       : (polynomial)+                                   #canonicalPolynom
+canonical       : polynomial+                                     #canonicalPolynom
                 ;
 
 polynomial      : SIGN? '(' (polynomial)* ')'                     #parens
