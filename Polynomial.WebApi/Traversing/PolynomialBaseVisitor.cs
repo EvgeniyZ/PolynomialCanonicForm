@@ -45,6 +45,17 @@ public partial class PolynomialBaseVisitor<Result> : AbstractParseTreeVisitor<Re
 	/// <return>The visitor result.</return>
 	public virtual Result VisitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context) { return VisitChildren(context); }
 	/// <summary>
+	/// Visit a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitEquality([NotNull] PolynomialParser.EqualityContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// <para>

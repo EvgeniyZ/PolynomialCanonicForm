@@ -43,6 +43,18 @@ public interface IPolynomialListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEquality([NotNull] PolynomialParser.EqualityContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEquality([NotNull] PolynomialParser.EqualityContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>

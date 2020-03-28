@@ -39,6 +39,13 @@ public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEquality([NotNull] PolynomialParser.EqualityContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// </summary>

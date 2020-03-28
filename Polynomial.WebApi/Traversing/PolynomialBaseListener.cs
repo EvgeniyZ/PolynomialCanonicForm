@@ -49,6 +49,20 @@ public partial class PolynomialBaseListener : IPolynomialListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterEquality([NotNull] PolynomialParser.EqualityContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>equality</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitEquality([NotNull] PolynomialParser.EqualityContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
 	/// <para>The default implementation does nothing.</para>

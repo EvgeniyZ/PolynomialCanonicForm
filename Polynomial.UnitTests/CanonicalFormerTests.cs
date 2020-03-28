@@ -6,6 +6,19 @@ namespace Polynomial.UnitTests
     public class CanonicalFormerTests
     {
         [Theory]
+        [InlineData("12=44", "-32")]
+        [InlineData("x^2+3.5xy+y=y^2-xy+y", "x^2+4.5xy-y^2")]
+        [InlineData("-(22+44x^2)+(11+44y^2)-(123)=55-asd+a^2", "-189-44x^2+44y^2+asd-a^2")]
+        public void ToCanonical_EqualityExpression_ShouldBeInCanonicalForm(string expression, string expected)
+        {
+            var canonicalFormer = new CanonicalFormer();
+
+            string result = canonicalFormer.ToCanonical(expression);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
         [InlineData("10+y^4+(y^4+44)", "54+2y^4")]
         [InlineData("10+y^4-(y^4+44)", "-34")]
         [InlineData("-(10+y^4+(y^4+44))", "-54-2y^4")]

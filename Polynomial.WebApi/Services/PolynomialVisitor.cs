@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
 
 namespace Polynomial.WebApi.Services
@@ -7,6 +8,7 @@ namespace Polynomial.WebApi.Services
     public class PolynomialVisitor : PolynomialBaseVisitor<Polynom>
     {
         private const string SUB = "-";
+        private const string EQUAL = "=";
 
         public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
@@ -85,6 +87,27 @@ namespace Polynomial.WebApi.Services
         public override Polynom VisitCanonicalPolynom(PolynomialParser.CanonicalPolynomContext context)
         {
             return ConstructCanonicalPolynom(context.polynomial().Select(Visit).SelectMany(x => x.Monoms).ToList());
+        }
+
+        public override Polynom VisitEquality(PolynomialParser.EqualityContext context)
+        {
+            var monomsBeforeEquality = context.children.TakeWhile(x => x.GetText() != EQUAL)
+                .Select(Visit)
+                .SelectMany(x => x.Monoms)
+                .ToList();
+            var monomsAfterEquality = context.children.SkipWhile(x => x.GetText() != EQUAL)
+                .Skip(1)
+                .Select(Visit)
+                .SelectMany(x => x.Monoms)
+                .ToList();
+            foreach (var monom in monomsAfterEquality)
+            {
+                monom.Coefficient *= -1;
+            }
+
+            monomsBeforeEquality.AddRange(monomsAfterEquality);
+
+            return ConstructCanonicalPolynom(monomsBeforeEquality);
         }
 
         private static void AdjustCoefficientIfSignIsSub(Monom monom, string sign)

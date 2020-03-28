@@ -1,6 +1,7 @@
 grammar Polynomial;
 
 canonical       : polynomial+                                     #canonicalPolynom
+                | polynomial+ EQUAL polynomial+                   #equality
                 ;
 
 polynomial      : SIGN? '(' (polynomial)* ')'                     #parens
@@ -17,4 +18,5 @@ INT                     : ('0'..'9')+;
 DEC                     : INT '.' INT;
 VAR                     : [a-z]+;
 SIGN                    : '+' | '-';
+EQUAL                   : '=';
 WHITESPACE              : (' '|'\t')+ -> skip;
