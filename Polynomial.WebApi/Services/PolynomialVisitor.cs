@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
 
 namespace Polynomial.WebApi.Services
 {
     public class PolynomialVisitor : PolynomialBaseVisitor<Polynom>
     {
+        private const string SUB = "-";
+
         public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
             List<Monom> monoms = context.polynomial().Select(Visit).SelectMany(x => x.Monoms).ToList();
             foreach (var monom in monoms)
             {
-                AdjustCoefficientIfSignIsSub(monom, context.SIGN());
+                AdjustCoefficientIfSignIsSub(monom, context.SIGN()?.GetText());
             }
 
             return ConstructCanonicalPolynom(monoms);
@@ -21,7 +22,7 @@ namespace Polynomial.WebApi.Services
         public override Polynom VisitNumber(PolynomialParser.NumberContext context)
         {
             var monom = new Monom {Coefficient = double.Parse(context.coefficient().GetText())};
-            AdjustCoefficientIfSignIsSub(monom, context.SIGN());
+            AdjustCoefficientIfSignIsSub(monom, context.SIGN()?.GetText());
 
             return new Polynom {Monoms = new List<Monom> {monom}};
         }
@@ -76,7 +77,7 @@ namespace Polynomial.WebApi.Services
                 }
             }
 
-            AdjustCoefficientIfSignIsSub(polynom.Monoms.First(), context.SIGN());
+            AdjustCoefficientIfSignIsSub(polynom.Monoms.First(), context.SIGN()?.GetText());
 
             return polynom;
         }
@@ -86,74 +87,45 @@ namespace Polynomial.WebApi.Services
             return ConstructCanonicalPolynom(context.polynomial().Select(Visit).SelectMany(x => x.Monoms).ToList());
         }
 
-        private static void AdjustCoefficientIfSignIsSub(Monom monom, ITerminalNode sign)
+        private static void AdjustCoefficientIfSignIsSub(Monom monom, string sign)
         {
-            if (sign != null && sign.GetText() == "-")
+            switch (sign)
             {
-                monom.Coefficient *= -1;
+                case null:
+                    return;
+                case SUB:
+                    monom.Coefficient *= -1;
+                    break;
             }
         }
 
-        private Polynom ConstructCanonicalPolynom(List<Monom> monoms)
+        private static Polynom ConstructCanonicalPolynom(List<Monom> monoms)
         {
             var currentMonomIndex = 0;
-            var monomsCount = monoms.Count - 1;
-            bool joined = false;
-            while (currentMonomIndex < monomsCount)
+            var lastMonomIndex = monoms.Count - 1;
+            while (currentMonomIndex < lastMonomIndex)
             {
                 var addendMonomIndex = currentMonomIndex + 1;
-                while (addendMonomIndex <= monomsCount)
+                while (addendMonomIndex <= lastMonomIndex)
                 {
-                    joined = TryJoinToCurrentIfIdentifiersEqual(monoms[currentMonomIndex], monoms[addendMonomIndex]);
+                    bool joined = TryJoinToCurrentIfIdentifiersEquals(monoms[currentMonomIndex], monoms[addendMonomIndex]);
                     if (joined)
                     {
-                        monomsCount--;
+                        lastMonomIndex--;
                         monoms.Remove(monoms[addendMonomIndex]);
-                        break;
+                        continue;
                     }
 
                     addendMonomIndex++;
                 }
 
-                if (joined)
-                {
-                    currentMonomIndex = 0;
-                    joined = false;
-                }
-                else
-                {
-                    currentMonomIndex++;
-                }
+                currentMonomIndex++;
             }
 
             return new Polynom {Monoms = monoms.Where(x => x.Coefficient != 0).ToList()};
         }
 
-        private static void SetCoefficientsSignsToMonoms(List<Monom> monoms, List<ITerminalNode> operations)
-        {
-            var monomIndex = 0;
-            var startedWithMinus = monoms.Count == operations.Count;
-            if (!startedWithMinus)
-            {
-                monomIndex++;
-            }
-
-            foreach (var operation in operations)
-            {
-                switch (operation.GetText())
-                {
-                    case "+":
-                        break;
-                    case "-":
-                        monoms[monomIndex].Coefficient *= -1;
-                        break;
-                }
-
-                monomIndex++;
-            }
-        }
-
-        private static bool TryJoinToCurrentIfIdentifiersEqual(Monom currentMonom, Monom addendMonom)
+        private static bool TryJoinToCurrentIfIdentifiersEquals(Monom currentMonom, Monom addendMonom)
         {
             if (currentMonom.GetIdentifier() == addendMonom.GetIdentifier())
             {

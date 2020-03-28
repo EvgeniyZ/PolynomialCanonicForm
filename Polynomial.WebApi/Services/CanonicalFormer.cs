@@ -8,7 +8,7 @@ namespace Polynomial.WebApi.Services
     {
         public string ToCanonical(string expression)
         {
-            var tree = GetParsedPolynomTree(expression);
+            var tree = GetParsedTree(expression);
 
             PolynomialVisitor polynomialVisitor = new PolynomialVisitor();
             Polynom canonical = polynomialVisitor.Visit(tree);
@@ -16,14 +16,16 @@ namespace Polynomial.WebApi.Services
             return canonical.ToString();
         }
 
-        private static IParseTree GetParsedPolynomTree(string expression)
+        private static IParseTree GetParsedTree(string expression)
         {
             ICharStream stream = CharStreams.fromstring(expression);
             ITokenSource lexer = new PolynomialLexer(stream);
             ITokenStream tokens = new CommonTokenStream(lexer);
             PolynomialParser parser = new PolynomialParser(tokens);
+
             parser.BuildParseTree = true;
             IParseTree tree = parser.canonical();
+
             return tree;
         }
     }
