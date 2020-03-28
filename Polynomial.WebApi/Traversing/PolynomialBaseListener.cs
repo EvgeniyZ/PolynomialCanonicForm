@@ -35,19 +35,19 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class PolynomialBaseListener : IPolynomialListener {
 	/// <summary>
-	/// Enter a parse tree produced by the <c>addSub</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// Enter a parse tree produced by the <c>canonicalPolynom</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAddSub([NotNull] PolynomialParser.AddSubContext context) { }
+	public virtual void EnterCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>addSub</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// Exit a parse tree produced by the <c>canonicalPolynom</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAddSub([NotNull] PolynomialParser.AddSubContext context) { }
+	public virtual void ExitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
@@ -62,6 +62,20 @@ public partial class PolynomialBaseListener : IPolynomialListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitParens([NotNull] PolynomialParser.ParensContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>monom</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMonom([NotNull] PolynomialParser.MonomContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>monom</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMonom([NotNull] PolynomialParser.MonomContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>addend</c>
 	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.

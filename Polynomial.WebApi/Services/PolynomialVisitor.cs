@@ -9,24 +9,21 @@ namespace Polynomial.WebApi.Services
     {
         public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
-            var sign = context.SIGN();
-            if (sign is null || sign.GetText() == "+")
+            List<Monom> monoms = context.polynomial().Select(Visit).SelectMany(x => x.Monoms).ToList();
+            foreach (var monom in monoms)
             {
-                return Visit(context.polynomial());
+                AdjustCoefficientIfSignIsSub(monom, context.SIGN());
             }
 
-            var polynomial = Visit(context.polynomial());
-            foreach (var monom in polynomial.Monoms)
-            {
-                monom.Coefficient *= -1;
-            }
-
-            return polynomial;
+            return ConstructCanonicalPolynom(monoms);
         }
 
         public override Polynom VisitNumber(PolynomialParser.NumberContext context)
         {
-            return new Polynom {Monoms = new List<Monom> {new Monom {Coefficient = double.Parse(context.GetText())}}};
+            var monom = new Monom {Coefficient = double.Parse(context.coefficient().GetText())};
+            AdjustCoefficientIfSignIsSub(monom, context.SIGN());
+
+            return new Polynom {Monoms = new List<Monom> {monom}};
         }
 
         public override Polynom VisitAddend(PolynomialParser.AddendContext context)
@@ -44,16 +41,16 @@ namespace Polynomial.WebApi.Services
                         Variable = context.VAR().GetText(),
                         Power = 1
                     });
-                    return polynom;
                 }
-
-                polynom.Monoms.Add(new Monom
+                else
                 {
-                    Coefficient = 1,
-                    Variable = context.VAR().GetText(),
-                    Power = int.Parse(power.GetText())
-                });
-                return polynom;
+                    polynom.Monoms.Add(new Monom
+                    {
+                        Coefficient = 1,
+                        Variable = context.VAR().GetText(),
+                        Power = int.Parse(power.GetText())
+                    });
+                }
             }
             else
             {
@@ -67,24 +64,38 @@ namespace Polynomial.WebApi.Services
                         Variable = context.VAR().GetText(),
                         Power = 1
                     });
-                    return polynom;
                 }
-
-                polynom.Monoms.Add(new Monom
+                else
                 {
-                    Coefficient = double.Parse(coefficient),
-                    Variable = context.VAR().GetText(),
-                    Power = int.Parse(power.GetText())
-                });
-                return polynom;
+                    polynom.Monoms.Add(new Monom
+                    {
+                        Coefficient = double.Parse(coefficient),
+                        Variable = context.VAR().GetText(),
+                        Power = int.Parse(power.GetText())
+                    });
+                }
+            }
+
+            AdjustCoefficientIfSignIsSub(polynom.Monoms.First(), context.SIGN());
+
+            return polynom;
+        }
+
+        public override Polynom VisitCanonicalPolynom(PolynomialParser.CanonicalPolynomContext context)
+        {
+            return ConstructCanonicalPolynom(context.polynomial().Select(Visit).SelectMany(x => x.Monoms).ToList());
+        }
+
+        private static void AdjustCoefficientIfSignIsSub(Monom monom, ITerminalNode sign)
+        {
+            if (sign != null && sign.GetText() == "-")
+            {
+                monom.Coefficient *= -1;
             }
         }
 
-        public override Polynom VisitAddSub(PolynomialParser.AddSubContext context)
+        private Polynom ConstructCanonicalPolynom(List<Monom> monoms)
         {
-            List<Monom> monoms = context.monomial().Select(Visit).SelectMany(x => x.Monoms).ToList();
-            var operations = context.SIGN().ToList();
-            SetCoefficientsSignsToMonoms(monoms, operations);
             var currentMonomIndex = 0;
             var monomsCount = monoms.Count - 1;
             bool joined = false;
@@ -98,7 +109,6 @@ namespace Polynomial.WebApi.Services
                     {
                         monomsCount--;
                         monoms.Remove(monoms[addendMonomIndex]);
-                        operations.Remove(operations[currentMonomIndex]);
                         break;
                     }
 
@@ -115,8 +125,6 @@ namespace Polynomial.WebApi.Services
                     currentMonomIndex++;
                 }
             }
-
-            //TODO : Remove from monoms and operations that monoms which coefficient is ZERO
 
             return new Polynom {Monoms = monoms.Where(x => x.Coefficient != 0).ToList()};
         }

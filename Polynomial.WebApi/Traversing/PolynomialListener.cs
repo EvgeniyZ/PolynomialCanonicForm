@@ -31,17 +31,17 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IPolynomialListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by the <c>addSub</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// Enter a parse tree produced by the <c>canonicalPolynom</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterAddSub([NotNull] PolynomialParser.AddSubContext context);
+	void EnterCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>addSub</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// Exit a parse tree produced by the <c>canonicalPolynom</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitAddSub([NotNull] PolynomialParser.AddSubContext context);
+	void ExitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
@@ -54,6 +54,18 @@ public interface IPolynomialListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitParens([NotNull] PolynomialParser.ParensContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>monom</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMonom([NotNull] PolynomialParser.MonomContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>monom</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMonom([NotNull] PolynomialParser.MonomContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>addend</c>
 	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.

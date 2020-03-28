@@ -23,7 +23,7 @@ namespace Polynomial.WebApi.Services
             ITokenStream tokens = new CommonTokenStream(lexer);
             PolynomialParser parser = new PolynomialParser(tokens);
             parser.BuildParseTree = true;
-            IParseTree tree = parser.polynomial();
+            IParseTree tree = parser.canonical();
             return tree;
         }
     }

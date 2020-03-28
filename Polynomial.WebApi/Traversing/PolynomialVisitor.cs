@@ -32,12 +32,12 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
-	/// Visit a parse tree produced by the <c>addSub</c>
-	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// Visit a parse tree produced by the <c>canonicalPolynom</c>
+	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitAddSub([NotNull] PolynomialParser.AddSubContext context);
+	Result VisitCanonicalPolynom([NotNull] PolynomialParser.CanonicalPolynomContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>parens</c>
 	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
@@ -45,6 +45,13 @@ public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitParens([NotNull] PolynomialParser.ParensContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>monom</c>
+	/// labeled alternative in <see cref="PolynomialParser.polynomial"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMonom([NotNull] PolynomialParser.MonomContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>addend</c>
 	/// labeled alternative in <see cref="PolynomialParser.monomial"/>.
