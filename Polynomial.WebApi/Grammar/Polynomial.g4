@@ -1,14 +1,17 @@
 grammar Polynomial;
 
-polynomial      : (SIGN? monomial)(SIGN monomial)*          #addSub
-                | '(' polynomial ')'                        #parens
+canonical       : polynomial+                                     #canonicalPolynom
                 ;
 
-monomial        : coefficient? VAR ('^' INT)?               #addend
-                | coefficient                               #number
+polynomial      : SIGN? '(' (polynomial)* ')'                     #parens
+                | monomial                                        #monom
                 ;
 
-coefficient     : INT | DEC;
+monomial        : SIGN? coefficient? VAR ('^' INT)?               #addend
+                | SIGN? coefficient                               #number
+                ;
+
+coefficient             : INT | DEC;
 
 INT                     : ('0'..'9')+;
 DEC                     : INT '.' INT;

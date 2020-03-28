@@ -7,6 +7,7 @@ namespace Polynomial.UnitTests
     {
         [Theory]
         [InlineData("3+1+2", "6")]
+        [InlineData("-4", "-4")]
         [InlineData("-103+1+2", "-100")]
         [InlineData("x+3+1+2", "x+6")]
         [InlineData("x-4-3+2", "x-5")]
@@ -15,6 +16,7 @@ namespace Polynomial.UnitTests
         [InlineData("x+xy+y^2+abc-xy", "x+y^2+abc")]
         [InlineData("-10x^5+144y^4-z^3+102", "-10x^5+144y^4-z^3+102")]
         [InlineData("10+y^4-y^4", "10")]
+        [InlineData("10+y^4+(y^4+44)", "54+2y^4")]
         [InlineData("10+y^4-(y^4+44)", "-34")]
         public void ToCanonical_ShouldBeInCanonicalForm(string expression, string expected)
         {
