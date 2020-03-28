@@ -1,9 +1,9 @@
 # Polynomial Canonical Form
 ASP.Net core service that reduces given expression to a canonic form.
 ```
-10+y^4+(y^4+44)      -> 54+2y^4
+10+y^4+(y^4+44)      -> 2y^4+54
 x+3+1+2              -> x+6
-x^2+3.5xy+y=y^2-xy+y -> x^2+4.5xy-y^2
+x^2+3.5xy+y=y^2-xy+y -> x^2-y^2+4.5xy
 ```
 More examples you can find in Polynomial.UnitTests.CanonicalFormerTests
 

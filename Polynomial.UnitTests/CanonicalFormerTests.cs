@@ -7,6 +7,16 @@ namespace Polynomial.UnitTests
     {
         [Theory]
         [InlineData("12=")]
+        [InlineData("123+222=123+")]
+        [InlineData("123+222-123+")]
+        [InlineData("123+222-123+=")]
+        [InlineData("123=21+")]
+        [InlineData("(")]
+        [InlineData("+")]
+        [InlineData("-")]
+        [InlineData("*")]
+        [InlineData("@")]
+        [InlineData("123+456=123+(")]
         public void ToCanonical_InvalidExpression_ShouldReturnErrorMessage(string expression)
         {
             var canonicalFormer = new CanonicalFormer();
@@ -18,8 +28,8 @@ namespace Polynomial.UnitTests
         
         [Theory]
         [InlineData("12=44", "-32")]
-        [InlineData("x^2+3.5xy+y=y^2-xy+y", "x^2+4.5xy-y^2")]
-        [InlineData("-(22+44x^2)+(11+44y^2)-(123)=55-asd+a^2", "-189-44x^2+44y^2+asd-a^2")]
+        [InlineData("x^2+3.5xy+y=y^2-xy+y", "x^2-y^2+4.5xy")]
+        [InlineData("-(22+44x^2)+(11+44y^2)-(123)=55-asd+a^2", "-44x^2+44y^2-a^2+asd-189")]
         public void ToCanonical_EqualityExpression_ShouldBeInCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();
@@ -30,11 +40,11 @@ namespace Polynomial.UnitTests
         }
 
         [Theory]
-        [InlineData("10+y^4+(y^4+44)", "54+2y^4")]
+        [InlineData("10+y^4+(y^4+44)", "2y^4+54")]
         [InlineData("10+y^4-(y^4+44)", "-34")]
-        [InlineData("-(10+y^4+(y^4+44))", "-54-2y^4")]
+        [InlineData("-(10+y^4+(y^4+44))", "-2y^4-54")]
         [InlineData("10+(y^4-(y^4+44))", "-34")]
-        [InlineData("-(22+44x^2)+(11+44y^2)-(123)", "-134-44x^2+44y^2")]
+        [InlineData("-(22+44x^2)+(11+44y^2)-(123)", "-44x^2+44y^2-134")]
         public void ToCanonical_ExpressionWithBrackets_ShouldBeInCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();
@@ -48,8 +58,8 @@ namespace Polynomial.UnitTests
         [InlineData("x+3+1+2", "x+6")]
         [InlineData("x-4-3+2", "x-5")]
         [InlineData("-x-4-3+2", "-x-5")]
-        [InlineData("x+xy+y^2", "x+xy+y^2")]
-        [InlineData("x+xy+y^2+abc-xy", "x+y^2+abc")]
+        [InlineData("x+xy+y^2", "y^2+xy+x")]
+        [InlineData("x+xy+y^2+abc-xy", "y^2+abc+x")]
         [InlineData("-10x^5+144y^4-z^3+102", "-10x^5+144y^4-z^3+102")]
         [InlineData("10+y^4-y^4", "10")]
         public void ToCanonical_ShouldBeInCanonicalForm(string expression, string expected)

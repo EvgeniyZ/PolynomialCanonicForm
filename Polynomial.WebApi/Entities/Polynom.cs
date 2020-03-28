@@ -18,9 +18,11 @@ namespace Polynomial.WebApi.Entities
             var canonical = new StringBuilder();
             if (Monoms.Any())
             {
-                var headliner = Monoms.First();
+                var orderedMonoms = Monoms.OrderByDescending(x => x.Power)
+                    .ThenByDescending(x => x.Variable?.Length);
+                var headliner = orderedMonoms.First();
                 canonical.Append(headliner.ToHeadlinerString());
-                foreach (var monom in Monoms.Skip(1))
+                foreach (var monom in orderedMonoms.Skip(1))
                 {
                     canonical.Append(monom);
                 }

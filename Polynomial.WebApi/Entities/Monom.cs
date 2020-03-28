@@ -10,11 +10,15 @@ namespace Polynomial.WebApi.Entities
         public int Power { get; set; }
         public string Variable { get; set; }
 
+        /// <summary>
+        /// Identifier is used to join addends with same Power, Variable.
+        /// If Variable is empty then it's constant. All constants have the same identifier
+        /// </summary>
+        /// <returns></returns>
         public int GetIdentifier()
         {
             if (string.IsNullOrEmpty(Variable))
             {
-                //if no variable then monom is const
                 return 1;
             }
 
