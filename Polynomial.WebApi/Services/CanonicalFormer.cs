@@ -21,7 +21,7 @@ namespace Polynomial.WebApi.Services
                 PolynomialVisitor polynomialVisitor = new PolynomialVisitor();
                 Polynom canonical = polynomialVisitor.Visit(tree);
 
-                return (canonical.ToString(), string.Empty);
+                return ($"{canonical}", string.Empty);
             }
 
             return (string.Empty, parseErrorMessage);

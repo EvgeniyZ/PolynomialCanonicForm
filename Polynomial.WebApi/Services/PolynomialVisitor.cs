@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Entities;
 
 namespace Polynomial.WebApi.Services
@@ -107,7 +106,7 @@ namespace Polynomial.WebApi.Services
 
             monomsBeforeEquality.AddRange(monomsAfterEquality);
 
-            return ConstructCanonicalPolynom(monomsBeforeEquality);
+            return ConstructCanonicalPolynom(monomsBeforeEquality, true);
         }
 
         private static void AdjustCoefficientIfSignIsSub(Monom monom, string sign)
@@ -122,7 +121,7 @@ namespace Polynomial.WebApi.Services
             }
         }
 
-        private static Polynom ConstructCanonicalPolynom(List<Monom> monoms)
+        private static Polynom ConstructCanonicalPolynom(List<Monom> monoms, bool hasEqualsSign = false)
         {
             var currentMonomIndex = 0;
             var lastMonomIndex = monoms.Count - 1;
@@ -145,7 +144,7 @@ namespace Polynomial.WebApi.Services
                 currentMonomIndex++;
             }
 
-            return new Polynom {Monoms = monoms.Where(x => x.Coefficient != 0).ToList()};
+            return new Polynom {Monoms = monoms.Where(x => x.Coefficient != 0).ToList(), HasEqualsSign = hasEqualsSign};
         }
 
         private static bool TryJoinToCurrentIfIdentifiersEquals(Monom currentMonom, Monom addendMonom)

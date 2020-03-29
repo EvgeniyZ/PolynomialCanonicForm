@@ -12,23 +12,36 @@ namespace Polynomial.WebApi.Entities
         }
 
         public IList<Monom> Monoms { get; set; }
+        public bool HasEqualsSign { get; set; }
 
         public override string ToString()
         {
             var canonical = new StringBuilder();
+            bool isOnlyConstantCanonical = false;
             if (Monoms.Any())
             {
                 var orderedMonoms = Monoms.OrderByDescending(x => x.Power)
                     .ThenByDescending(x => x.Variable?.Length);
                 var headliner = orderedMonoms.First();
                 canonical.Append(headliner.ToHeadlinerString());
-                foreach (var monom in orderedMonoms.Skip(1))
+                var monomsWithSigns = orderedMonoms.Skip(1);
+                if (monomsWithSigns.Any())
                 {
-                    canonical.Append(monom);
+                    foreach (var monom in monomsWithSigns)
+                    {
+                        canonical.Append(monom);
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(headliner.Variable))
+                    {
+                        isOnlyConstantCanonical = true;
+                    }
                 }
             }
 
-            return canonical.ToString();
+            return HasEqualsSign && !isOnlyConstantCanonical ? $"{canonical}=0" : canonical.ToString();
         }
     }
 }
