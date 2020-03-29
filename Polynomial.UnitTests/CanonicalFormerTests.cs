@@ -16,6 +16,8 @@ namespace Polynomial.UnitTests
         [InlineData("-")]
         [InlineData("*")]
         [InlineData("@")]
+        [InlineData("@1231")]
+        [InlineData("23*44=12")]
         [InlineData("123+456=123+(")]
         public void ToCanonical_InvalidExpression_ShouldBeErrorMessage(string expression)
         {

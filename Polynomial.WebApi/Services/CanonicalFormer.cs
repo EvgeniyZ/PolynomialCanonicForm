@@ -48,14 +48,24 @@ namespace Polynomial.WebApi.Services
             ITokenSource lexer = new PolynomialLexer(stream);
 
             ITokenStream tokens = new CommonTokenStream(lexer);
-            PolynomialParser parser = new PolynomialParser(tokens) {BuildParseTree = true};
-            parser.RemoveErrorListeners();
+            PolynomialParser parser = new PolynomialParser(tokens);
+            
+            //TODO : Add a hack with validation -> use REGEXP and wait for an answer to SO ticket
+            //https://stackoverflow.com/questions/60920641/c-sharp-antlr4-defaulterrorstrategy-or-custom-error-listener-does-not-catch-unre
+            //And cover 2 failed unit tests
+
+            //parser.RemoveErrorListeners();
             parser.AddErrorListener(new PolynomialErrorListener());
+            parser.BuildParseTree = true;
 
             try
             {
                 var tree = parser.canonical();
                 return (tree, string.Empty);
+            }
+            catch (RecognitionException re)
+            {
+                return (null, re.Message);
             }
             catch (ParseCanceledException pce)
             {
