@@ -25,4 +25,4 @@ which is super useful for creating a stable grammar for ANTLR.
 https://plugins.jetbrains.com/plugin/7358-antlr-v4-grammar-plugin
 
 What I really love is that ANTLR 4 grammar plugin can test specific grammar rules
-via your input and generate Abstract Syntax Tree regarding of this input.
+via your input and generate visualized Abstract Syntax Tree regarding of this input.
