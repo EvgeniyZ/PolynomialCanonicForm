@@ -10,6 +10,17 @@ namespace Polynomial.WebApi.Services
     {
         public (string canonical, string errorMessage) ToCanonical(string expression)
         {
+            if (string.IsNullOrEmpty(expression))
+            {
+                return (string.Empty, $"{nameof(expression)} is empty");
+            }
+
+            string trimmedExpression = expression.Replace(" ", string.Empty);
+            if (string.IsNullOrEmpty(trimmedExpression))
+            {
+                return (string.Empty, $"{nameof(expression)} is empty");
+            }
+
             (IParseTree tree, string parseErrorMessage) = TryParseExpression(expression);
             if (string.IsNullOrEmpty(parseErrorMessage))
             {

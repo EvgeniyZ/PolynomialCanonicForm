@@ -38,6 +38,18 @@ namespace Polynomial.UnitTests
 
             Assert.Equal(expected, canonical);
         }
+        
+        [Theory]
+        [InlineData("       10    +      y^4        +(y^4+    44         )", "2y^4+54")]
+        [InlineData("10+y^      4-(       y^4        +      44)", "-34")]
+        public void ToCanonical_ExpressionsWithWhitespaces_ShouldBeInCanonicalForm(string expression, string expected)
+        {
+            var canonicalFormer = new CanonicalFormer();
+
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
+
+            Assert.Equal(expected, canonical);
+        }
 
         [Theory]
         [InlineData("10+y^4+(y^4+44)", "2y^4+54")]
