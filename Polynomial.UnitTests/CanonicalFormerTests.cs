@@ -25,7 +25,7 @@ namespace Polynomial.UnitTests
 
             Assert.NotEmpty(errorMessage);
         }
-        
+
         [Theory]
         [InlineData("12=44", "-32")]
         [InlineData("x^2+3.5xy+y=y^2-xy+y", "x^2-y^2+4.5xy")]
@@ -38,7 +38,20 @@ namespace Polynomial.UnitTests
 
             Assert.Equal(expected, canonical);
         }
-        
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("                     ")]
+        public void ToCanonical_EmptyExpression_ShouldBeErrorMessage(string expression)
+        {
+            var canonicalFormer = new CanonicalFormer();
+
+            (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expression);
+
+            Assert.NotEmpty(errorMessage);
+        }
+
         [Theory]
         [InlineData("       10    +      y^4        +(y^4+    44         )", "2y^4+54")]
         [InlineData("10+y^      4-(       y^4        +      44)", "-34")]
