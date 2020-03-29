@@ -46,11 +46,10 @@ namespace Polynomial.WebApi.Controllers
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
-                ModelState.AddModelError("File",
-                    $"The request couldn't be processed. Unknown content type");
-
+                ModelState.AddModelError("File", "The request couldn't be processed. Unknown content type");
                 return BadRequest(ModelState);
             }
+
             var expressionsQueue = new BlockingCollection<ExpressionBlock>();
             var canonicalQueue = new BlockingCollection<ExpressionBlock>();
 
@@ -58,8 +57,6 @@ namespace Polynomial.WebApi.Controllers
 
             string boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType));
             await ProduceExpressionsQueue(boundary, HttpContext.Request.Body, expressionsQueue);
-            
-            //TODO Change project structure for directories - Add Domain -> Grammar, Entities, Traversing
 
             await consumeTask;
 

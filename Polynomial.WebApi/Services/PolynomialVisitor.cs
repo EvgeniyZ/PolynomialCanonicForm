@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Polynomial.WebApi.Domain.Entities;
-using Polynomial.WebApi.Domain.Traversing;
 
 namespace Polynomial.WebApi.Services
 {
     public class PolynomialVisitor : PolynomialBaseVisitor<Polynom>
     {
-        private const string SUB = "-";
-        private const string EQUAL = "=";
+        private const string Sub = "-";
+        private const string Equal = "=";
 
         public override Polynom VisitParens(PolynomialParser.ParensContext context)
         {
@@ -91,11 +90,11 @@ namespace Polynomial.WebApi.Services
 
         public override Polynom VisitEquality(PolynomialParser.EqualityContext context)
         {
-            var monomsBeforeEquality = context.children.TakeWhile(x => x.GetText() != EQUAL)
+            var monomsBeforeEquality = context.children.TakeWhile(x => x.GetText() != Equal)
                 .Select(Visit)
                 .SelectMany(x => x.Monoms)
                 .ToList();
-            var monomsAfterEquality = context.children.SkipWhile(x => x.GetText() != EQUAL)
+            var monomsAfterEquality = context.children.SkipWhile(x => x.GetText() != Equal)
                 .Skip(1)
                 .Select(Visit)
                 .SelectMany(x => x.Monoms)
@@ -114,11 +113,9 @@ namespace Polynomial.WebApi.Services
         {
             switch (sign)
             {
-                case null:
-                    return;
-                case SUB:
+                case Sub:
                     monom.Coefficient *= -1;
-                    break;
+                    return;
             }
         }
 
