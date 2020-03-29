@@ -17,7 +17,7 @@ namespace Polynomial.UnitTests
         [InlineData("*")]
         [InlineData("@")]
         [InlineData("123+456=123+(")]
-        public void ToCanonical_InvalidExpression_ShouldReturnErrorMessage(string expression)
+        public void ToCanonical_InvalidExpression_ShouldBeErrorMessage(string expression)
         {
             var canonicalFormer = new CanonicalFormer();
 
@@ -55,7 +55,7 @@ namespace Polynomial.UnitTests
         [Theory]
         [InlineData("       10    +      y^4        +(y^4+    44         )", "2y^4+54")]
         [InlineData("10+y^      4-(       y^4        +      44)", "-34")]
-        public void ToCanonical_ExpressionsWithWhitespaces_ShouldBeInCanonicalForm(string expression, string expected)
+        public void ToCanonical_ExpressionWithWhitespaces_ShouldBeInCanonicalForm(string expression, string expected)
         {
             var canonicalFormer = new CanonicalFormer();
 

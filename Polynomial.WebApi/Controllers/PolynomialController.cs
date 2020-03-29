@@ -18,14 +18,10 @@ namespace Polynomial.WebApi.Controllers
     public class PolynomialController : ControllerBase
     {
         private readonly CanonicalFormer _canonicalFormer;
-        private readonly BlockingCollection<ExpressionBlock> _expressionsQueue;
-        private readonly BlockingCollection<ExpressionBlock> _canonicalQueue;
 
         public PolynomialController(CanonicalFormer canonicalFormer)
         {
             _canonicalFormer = canonicalFormer;
-            _expressionsQueue = new BlockingCollection<ExpressionBlock>();
-            _canonicalQueue = new BlockingCollection<ExpressionBlock>();
         }
 
         [HttpPost]
@@ -60,7 +56,10 @@ namespace Polynomial.WebApi.Controllers
                 MediaTypeHeaderValue.Parse(Request.ContentType));
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
-            var consumeTask = ConsumeExpressionsQueue();
+            var expressionsQueue = new BlockingCollection<ExpressionBlock>();
+            var canonicalQueue = new BlockingCollection<ExpressionBlock>();
+
+            var consumeTask = ConsumeExpressionsQueue(expressionsQueue, canonicalQueue);
             var section = await reader.ReadNextSectionAsync();
             var expressionsCount = 0;
 
@@ -77,7 +76,7 @@ namespace Polynomial.WebApi.Controllers
                     {
                         // don't think it's useful to readLineAsync because async\await has an overhead
                         string expression = streamReader.ReadLine();
-                        _expressionsQueue.Add(new ExpressionBlock
+                        expressionsQueue.Add(new ExpressionBlock
                         {
                             Expression = expression,
                             Id = expressionsCount
@@ -89,39 +88,31 @@ namespace Polynomial.WebApi.Controllers
                 section = await reader.ReadNextSectionAsync();
             }
 
-            _expressionsQueue.CompleteAdding();
+            expressionsQueue.CompleteAdding();
             await consumeTask;
 
-            while (_canonicalQueue.Count < expressionsCount)
-            {
-                await Task.Delay(100);
-            }
-
-            var outputStream = new MemoryStream(_canonicalQueue.OrderBy(x => x.Id).SelectMany(x => Encoding.ASCII.GetBytes($"{x.Expression}\n")).ToArray());
+            var outputStream = new MemoryStream(canonicalQueue.OrderBy(x => x.Id)
+                .SelectMany(x => Encoding.ASCII.GetBytes($"{x.Expression}\n"))
+                .ToArray());
             return new FileStreamResult(outputStream, new MediaTypeHeaderValue("application/octet-stream"))
             {
                 FileDownloadName = "canonicals.txt"
             };
-            // var outputStream = new GZipStream(), CompressionMode.Compress);
-            // return new FileStreamResult(outputStream, new MediaTypeHeaderValue("application/octet-stream"))
-            // {
-            //     FileDownloadName = "canonicals.zip"
-            // };
         }
 
-        private Task ConsumeExpressionsQueue()
+        private static Task ConsumeExpressionsQueue(BlockingCollection<ExpressionBlock> expressionsQueue, BlockingCollection<ExpressionBlock> canonicalQueue)
         {
             return Task.Run(() =>
             {
-                Parallel.ForEach(_expressionsQueue.GetConsumingEnumerable(),
+                Parallel.ForEach(expressionsQueue.GetConsumingEnumerable(),
                     new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
-                    (expressionBlock, state) =>
+                    (expressionBlock) =>
                     {
                         var canonicalFormer = new CanonicalFormer();
 
                         (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expressionBlock.Expression);
 
-                        _canonicalQueue.Add(new ExpressionBlock
+                        canonicalQueue.Add(new ExpressionBlock
                         {
                             Expression = string.IsNullOrEmpty(errorMessage) ? canonical : errorMessage,
                             Id = expressionBlock.Id

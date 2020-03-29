@@ -3,7 +3,8 @@ ASP.Net core service that reduces given expression to a canonic form.
 ```
 10+y^4+(y^4+44)      -> 2y^4+54
 x+3+1+2              -> x+6
-x^2+3.5xy+y=y^2-xy+y -> x^2-y^2+4.5xy
+x^2+3.5xy+y=y^2-xy+y -> x^2-y^2+4.5xy=0
+12=44                -> -32
 ```
 More examples you can find in Polynomial.UnitTests.CanonicalFormerTests
 
