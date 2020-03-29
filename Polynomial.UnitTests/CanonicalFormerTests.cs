@@ -68,6 +68,7 @@ namespace Polynomial.UnitTests
         [InlineData("10+y^4+(y^4+44)", "2y^4+54")]
         [InlineData("10+y^4-(y^4+44)", "-34")]
         [InlineData("-(10+y^4+(y^4+44))", "-2y^4-54")]
+        [InlineData("-(10+y^4-(y^4+44))", "34")]
         [InlineData("10+(y^4-(y^4+44))", "-34")]
         [InlineData("-(22+44x^2)+(11+44y^2)-(123)", "-44x^2+44y^2-134")]
         [InlineData("10+y^4+(y^4+44) = 12", "2y^4+42=0")]
