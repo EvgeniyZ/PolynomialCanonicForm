@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Polynomial.WebApi.Entities;
+using Polynomial.WebApi.Domain.Entities;
+using Polynomial.WebApi.Domain.Traversing;
 
 namespace Polynomial.WebApi.Services
 {

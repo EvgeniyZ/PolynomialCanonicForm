@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Polynomial.WebApi.Entities
+namespace Polynomial.WebApi.Domain.Entities
 {
     public class Polynom
     {

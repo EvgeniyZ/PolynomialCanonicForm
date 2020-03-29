@@ -1,8 +1,8 @@
 ﻿using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Polynomial.WebApi.Entities;
-using Polynomial.WebApi.Traversing;
+using Polynomial.WebApi.Domain.Entities;
+using Polynomial.WebApi.Domain.Traversing;
 
 namespace Polynomial.WebApi.Services
 {

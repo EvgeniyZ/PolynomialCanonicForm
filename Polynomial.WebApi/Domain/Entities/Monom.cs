@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace Polynomial.WebApi.Entities
+namespace Polynomial.WebApi.Domain.Entities
 {
     public class Monom
     {

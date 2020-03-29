@@ -2,7 +2,7 @@
 using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 
-namespace Polynomial.WebApi.Traversing
+namespace Polynomial.WebApi.Domain.Traversing
 {
     public class PolynomialErrorListener : BaseErrorListener
     {

@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Polynomial.WebApi.Entities;
+﻿using System.Collections.Generic;
+using Polynomial.WebApi.Domain.Entities;
 using Xunit;
 
 namespace Polynomial.UnitTests

@@ -58,6 +58,8 @@ namespace Polynomial.WebApi.Controllers
 
             string boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType));
             await ProduceExpressionsQueue(boundary, HttpContext.Request.Body, expressionsQueue);
+            
+            //TODO Change project structure for directories - Add Domain -> Grammar, Entities, Traversing
 
             await consumeTask;
 
