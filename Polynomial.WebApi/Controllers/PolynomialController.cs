@@ -51,17 +51,30 @@ namespace Polynomial.WebApi.Controllers
 
                 return BadRequest(ModelState);
             }
-
-            var boundary = MultipartRequestHelper.GetBoundary(
-                MediaTypeHeaderValue.Parse(Request.ContentType));
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-
             var expressionsQueue = new BlockingCollection<ExpressionBlock>();
             var canonicalQueue = new BlockingCollection<ExpressionBlock>();
 
             var consumeTask = ConsumeExpressionsQueue(expressionsQueue, canonicalQueue);
+
+            string boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType));
+            await ProduceExpressionsQueue(boundary, HttpContext.Request.Body, expressionsQueue);
+
+            await consumeTask;
+
+            var outputStream = new MemoryStream(canonicalQueue.OrderBy(x => x.Id)
+                .SelectMany(x => Encoding.ASCII.GetBytes($"{x.Expression}\n"))
+                .ToArray());
+            return new FileStreamResult(outputStream, new MediaTypeHeaderValue("application/octet-stream"))
+            {
+                FileDownloadName = "canonicals.txt"
+            };
+        }
+
+        private static async Task ProduceExpressionsQueue(string boundary, Stream httpRequestBody, BlockingCollection<ExpressionBlock> expressionsQueue)
+        {
+            var reader = new MultipartReader(boundary, httpRequestBody);
             var section = await reader.ReadNextSectionAsync();
-            var expressionsCount = 0;
+            var expressionId = 0;
 
             while (section != null)
             {
@@ -79,9 +92,9 @@ namespace Polynomial.WebApi.Controllers
                         expressionsQueue.Add(new ExpressionBlock
                         {
                             Expression = expression,
-                            Id = expressionsCount
+                            Id = expressionId
                         });
-                        expressionsCount++;
+                        expressionId++;
                     }
                 }
 
@@ -89,15 +102,6 @@ namespace Polynomial.WebApi.Controllers
             }
 
             expressionsQueue.CompleteAdding();
-            await consumeTask;
-
-            var outputStream = new MemoryStream(canonicalQueue.OrderBy(x => x.Id)
-                .SelectMany(x => Encoding.ASCII.GetBytes($"{x.Expression}\n"))
-                .ToArray());
-            return new FileStreamResult(outputStream, new MediaTypeHeaderValue("application/octet-stream"))
-            {
-                FileDownloadName = "canonicals.txt"
-            };
         }
 
         private static Task ConsumeExpressionsQueue(BlockingCollection<ExpressionBlock> expressionsQueue, BlockingCollection<ExpressionBlock> canonicalQueue)
