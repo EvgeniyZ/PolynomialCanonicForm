@@ -109,6 +109,11 @@ namespace Polynomial.WebApi.Services
             return ConstructCanonicalPolynom(monomsBeforeEquality, true);
         }
 
+        public override Polynom VisitParse(PolynomialParser.ParseContext context)
+        {
+            return Visit(context.canonical());
+        }
+
         private static void AdjustCoefficientIfSignIsSub(Monom monom, string sign)
         {
             switch (sign)

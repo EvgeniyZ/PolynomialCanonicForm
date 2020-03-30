@@ -34,6 +34,16 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class PolynomialBaseVisitor<Result> : AbstractParseTreeVisitor<Result>, IPolynomialVisitor<Result> {
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// <para>
+	/// The default implementation returns the result of calling <see cref="AbstractParseTreeVisitor{Result}.VisitChildren(IRuleNode)"/>
+	/// on <paramref name="context"/>.
+	/// </para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	public virtual Result VisitParse([NotNull] PolynomialParser.ParseContext context) { return VisitChildren(context); }
+	/// <summary>
 	/// Visit a parse tree produced by the <c>canonicalPolynom</c>
 	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// <para>

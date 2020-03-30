@@ -35,6 +35,18 @@ using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 [System.CLSCompliant(false)]
 public partial class PolynomialBaseListener : IPolynomialListener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParse([NotNull] PolynomialParser.ParseContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParse([NotNull] PolynomialParser.ParseContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>canonicalPolynom</c>
 	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// <para>The default implementation does nothing.</para>

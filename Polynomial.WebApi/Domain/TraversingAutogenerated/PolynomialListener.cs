@@ -31,6 +31,16 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IPolynomialListener : IParseTreeListener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParse([NotNull] PolynomialParser.ParseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParse([NotNull] PolynomialParser.ParseContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>canonicalPolynom</c>
 	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// </summary>

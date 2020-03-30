@@ -32,6 +32,12 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface IPolynomialVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="PolynomialParser.parse"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParse([NotNull] PolynomialParser.ParseContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>canonicalPolynom</c>
 	/// labeled alternative in <see cref="PolynomialParser.canonical"/>.
 	/// </summary>

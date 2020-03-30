@@ -1,5 +1,8 @@
 grammar Polynomial;
 
+parse           : canonical EOF
+                ;
+
 canonical       : polynomial+                                     #canonicalPolynom
                 | polynomial+ EQUAL polynomial+                   #equality
                 ;
