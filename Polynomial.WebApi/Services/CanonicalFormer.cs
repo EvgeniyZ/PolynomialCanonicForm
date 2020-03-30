@@ -8,25 +8,12 @@ namespace Polynomial.WebApi.Services
 {
     public class CanonicalFormer
     {
-        private static readonly Regex AllowedCharactersRegex;
-
-        static CanonicalFormer()
-        {
-            AllowedCharactersRegex = new Regex("^[0-9A-Za-z+-.=^()]*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        }
-
         public (string canonical, string errorMessage) ToCanonical(string expression)
         {
             var (success, trimmedExpression) = TrimExpressionIfNotEmpty(expression);
             if (!success)
             {
                 return (string.Empty, trimmedExpression);
-            }
-
-            var (anyUnrecognizedCharacter, unrecognizedCharacterErrorMessage) = AnyUnrecognizedCharacter(trimmedExpression);
-            if (anyUnrecognizedCharacter)
-            {
-                return (string.Empty, unrecognizedCharacterErrorMessage);
             }
 
             (IParseTree tree, string parseErrorMessage) = TryParseExpression(trimmedExpression);
@@ -55,24 +42,6 @@ namespace Polynomial.WebApi.Services
             }
 
             return (true, trimmedExpression);
-        }
-
-        /// <summary>
-        /// A hack with Regexp that checks expression on unrecognized characters.
-        /// It should be ANTLR parser responsibility, however it's not working, no clue why.
-        /// Raised SO question.
-        /// https://stackoverflow.com/questions/60920641/c-sharp-antlr4-defaulterrorstrategy-or-custom-error-listener-does-not-catch-unre
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        private static (bool isValid, string errorMessage) AnyUnrecognizedCharacter(string expression)
-        {
-            if (AllowedCharactersRegex.IsMatch(expression))
-            {
-                return (false, string.Empty);
-            }
-
-            return (true, "Expression is invalid. Found unrecognized characters. Allowed only a-z,'+','-','=','.'");
         }
 
         private static (IParseTree tree, string parseErrorMessage) TryParseExpression(string expression)

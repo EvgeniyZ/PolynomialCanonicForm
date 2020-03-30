@@ -36,7 +36,8 @@ public partial class PolynomialParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, INT=4, DEC=5, VAR=6, SIGN=7, EQUAL=8, WHITESPACE=9;
+		T__0=1, T__1=2, T__2=3, INT=4, DEC=5, VAR=6, SIGN=7, EQUAL=8, WHITESPACE=9, 
+		UNKNOWN=10;
 	public const int
 		RULE_parse = 0, RULE_canonical = 1, RULE_polynomial = 2, RULE_monomial = 3, 
 		RULE_coefficient = 4;
@@ -48,7 +49,8 @@ public partial class PolynomialParser : Parser {
 		null, "'('", "')'", "'^'", null, null, null, null, "'='"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, "INT", "DEC", "VAR", "SIGN", "EQUAL", "WHITESPACE"
+		null, null, null, null, "INT", "DEC", "VAR", "SIGN", "EQUAL", "WHITESPACE", 
+		"UNKNOWN"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -558,7 +560,7 @@ public partial class PolynomialParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\v', '\x43', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '\f', '\x43', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
 		'\x6', '\t', '\x6', '\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', 
 		'\x6', '\x3', '\x11', '\n', '\x3', '\r', '\x3', '\xE', '\x3', '\x12', 

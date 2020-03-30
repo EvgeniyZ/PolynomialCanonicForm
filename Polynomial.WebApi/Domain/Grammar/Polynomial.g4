@@ -23,3 +23,5 @@ VAR                     : [a-z]+;
 SIGN                    : '+' | '-';
 EQUAL                   : '=';
 WHITESPACE              : (' '|'\t')+ -> skip;
+// Fallback rule: matches any single character if not matched by another lexer rule
+UNKNOWN : . ;

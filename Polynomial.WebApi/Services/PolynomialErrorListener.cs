@@ -6,17 +6,15 @@ namespace Polynomial.WebApi.Services
 {
     public class PolynomialErrorListener : BaseErrorListener
     {
-        private const string Eof = "EOF";
-
         public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg,
             RecognitionException e)
         {
-            if (msg.Contains(Eof))
+            if (e is InputMismatchException ime)
             {
-                throw new ParseCanceledException($"{GetSyntaxErrorHeader(charPositionInLine)}. Missing an expression after '=' sign");
+                throw new ParseCanceledException($"{GetSyntaxErrorHeader(charPositionInLine)}. Missing an expression after ${ime.OffendingToken.Text} sign");
             }
 
-            if (e is NoViableAltException || e is InputMismatchException)
+            if (e is NoViableAltException)
             {
                 throw new ParseCanceledException($"{GetSyntaxErrorHeader(charPositionInLine)}. Probably, not closed operator");
             }
