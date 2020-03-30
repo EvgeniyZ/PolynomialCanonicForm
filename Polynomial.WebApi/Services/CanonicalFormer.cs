@@ -72,7 +72,7 @@ namespace Polynomial.WebApi.Services
                 return (false, string.Empty);
             }
 
-            return (true, "Expression contains unrecognized characters");
+            return (true, "Expression is invalid. Found unrecognized characters. Allowed only a-z,'+','-','=','.'");
         }
 
         private static (IParseTree tree, string parseErrorMessage) TryParseExpression(string expression)
