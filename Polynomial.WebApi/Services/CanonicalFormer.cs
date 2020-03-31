@@ -3,6 +3,7 @@ using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Polynomial.WebApi.Domain.Entities;
+using Polynomial.WebApi.Services.ErrorListeners;
 
 namespace Polynomial.WebApi.Services
 {
@@ -47,7 +48,7 @@ namespace Polynomial.WebApi.Services
         private static (IParseTree tree, string parseErrorMessage) TryParseExpression(string expression)
         {
             ICharStream stream = CharStreams.fromstring(expression);
-            ITokenSource lexer = new PolynomialLexer(stream);
+            PolynomialLexer lexer = new PolynomialLexer(stream);
 
             ITokenStream tokens = new CommonTokenStream(lexer);
             PolynomialParser parser = new PolynomialParser(tokens) {BuildParseTree = true};
@@ -59,10 +60,6 @@ namespace Polynomial.WebApi.Services
             {
                 var tree = parser.parse();
                 return (tree, string.Empty);
-            }
-            catch (RecognitionException re)
-            {
-                return (null, re.Message);
             }
             catch (ParseCanceledException pce)
             {
