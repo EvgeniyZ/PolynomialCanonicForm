@@ -51,16 +51,16 @@ namespace Polynomial.WebApi.Controllers
             }
 
             var expressionsQueue = new BlockingCollection<ExpressionBlock>();
-            var canonicalQueue = new BlockingCollection<ExpressionBlock>();
+            var canonicals = new ConcurrentBag<ExpressionBlock>();
 
-            var consumeTask = ConsumeExpressionsQueue(expressionsQueue, canonicalQueue);
+            var consumeTask = StartConsumeFromExpressionsQueue(expressionsQueue, canonicals);
 
             string boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType));
-            await ProduceExpressionsQueue(boundary, HttpContext.Request.Body, expressionsQueue);
+            await ProduceToExpressionsQueue(boundary, HttpContext.Request.Body, expressionsQueue);
 
             await consumeTask;
 
-            var outputStream = new MemoryStream(canonicalQueue.OrderBy(x => x.Id)
+            var outputStream = new MemoryStream(canonicals.OrderBy(x => x.Id)
                 .SelectMany(x => Encoding.ASCII.GetBytes($"{x.Expression}\n"))
                 .ToArray());
             return new FileStreamResult(outputStream, new MediaTypeHeaderValue("application/octet-stream"))
@@ -69,7 +69,7 @@ namespace Polynomial.WebApi.Controllers
             };
         }
 
-        private static async Task ProduceExpressionsQueue(string boundary, Stream httpRequestBody, BlockingCollection<ExpressionBlock> expressionsQueue)
+        private static async Task ProduceToExpressionsQueue(string boundary, Stream httpRequestBody, BlockingCollection<ExpressionBlock> expressionsQueue)
         {
             var reader = new MultipartReader(boundary, httpRequestBody);
             var section = await reader.ReadNextSectionAsync();
@@ -103,7 +103,7 @@ namespace Polynomial.WebApi.Controllers
             expressionsQueue.CompleteAdding();
         }
 
-        private static Task ConsumeExpressionsQueue(BlockingCollection<ExpressionBlock> expressionsQueue, BlockingCollection<ExpressionBlock> canonicalQueue)
+        private static Task StartConsumeFromExpressionsQueue(BlockingCollection<ExpressionBlock> expressionsQueue, ConcurrentBag<ExpressionBlock> canonicals)
         {
             return Task.Run(() =>
             {
@@ -115,7 +115,7 @@ namespace Polynomial.WebApi.Controllers
 
                         (string canonical, string errorMessage) = canonicalFormer.ToCanonical(expressionBlock.Expression);
 
-                        canonicalQueue.Add(new ExpressionBlock
+                        canonicals.Add(new ExpressionBlock
                         {
                             Expression = string.IsNullOrEmpty(errorMessage) ? canonical : errorMessage,
                             Id = expressionBlock.Id
